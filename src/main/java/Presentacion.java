@@ -5,13 +5,15 @@ public class Presentacion{
   private String horaInicio;
   private String horaFin;
   private String sala;
+  private Persona[] listaParticipante;
 
-  public Presentacion(String titulo, String participante, String horaInicio, String horaFin, String sala){
+  public Presentacion(String titulo, String participante, String horaInicio, String horaFin, String sala, Persona[] listaParticipante){
   this.titulo = titulo;
   this.participante = participante;
-  this.horaInicio = horaInicio;
+  this.horaInicio = horaInicio; 
   this.horaFin = horaFin;
   this.sala = sala;
+  this.listaParticipante = listaParticipante;
   }
 
   public String getTitulo(){
@@ -45,6 +47,16 @@ public class Presentacion{
     this.sala = sala;
   }
 
+  public void setLista(Persona[] listaParticipante) {
+
+    this.listaParticipante = listaParticipante;
+    
+  }
+
+  public Persona[] getLista() {
+    return listaParticipante;
+  }
+
   public void mostrarInformacion(){
     System.out.println("Titulo: " + titulo);
     System.out.println("Autor: " + participante);
@@ -52,4 +64,5 @@ public class Presentacion{
     System.out.println("Hora de fin: " + horaFin);
     System.out.println("Sala: " + sala);
   }
+  
 }

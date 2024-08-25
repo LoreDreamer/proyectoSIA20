@@ -35,9 +35,9 @@ public class Persona {
   }
 
   public void mostrarInformacion() {
-    System.out.println("Nombre: " + nombre);
-    System.out.println("Rut: " + rut);
-    System.out.println("Expositor: " + esExpositor);
+    System.out.println("Nombre : " + nombre);
+    System.out.println("Rut : " + rut);
+    System.out.println("Expositor : " + esExpositor);
   }
   
 }

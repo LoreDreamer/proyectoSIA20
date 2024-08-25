@@ -51,6 +51,5 @@ public class Presentacion{
     System.out.println("Hora de inicio: " + horaInicio);
     System.out.println("Hora de fin: " + horaFin);
     System.out.println("Sala: " + sala);
-
   }
 }

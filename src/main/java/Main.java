@@ -19,7 +19,7 @@ public class Main {
     while (true) {
 
       System.out.println("====================================================");
-      System.out.println("                MENU DE OPCIONES                 ");
+      System.out.println("                MENU DE PRESENTACIONES              ");
       System.out.println("====================================================\n");
       System.out.println("1. Registrar presentación");
       System.out.println("2. Mostrar información de presentación");
@@ -33,6 +33,7 @@ public class Main {
       scanner.nextLine();
 
       switch (opcion) {
+          
         case 1:
           limpiarPantalla();
           agregarPresentacion();
@@ -40,6 +41,7 @@ public class Main {
           presioneTecla();
           limpiarPantalla();
           break;
+          
         case 2:
           limpiarPantalla();
           mostrarPresentacion();
@@ -47,15 +49,22 @@ public class Main {
           presioneTecla();
           limpiarPantalla();
           break;
-        case 3:
-          // recalendarizarPresentacion();
+          
+        case 3:  
+          limpiarPantalla();
+          recalendarizarPresentacion();
           break;
+          
         case 4:
+          limpiarPantalla();
           // cambiarAsistente();
           break;
+          
         case 5:
+          limpiarPantalla();
           System.out.println("Saliendo del programa...");
           return;
+          
         default:
           System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
       }
@@ -63,9 +72,11 @@ public class Main {
   }
 
   private static void agregarPresentacion() {
+    
     System.out.println("======================================");
     System.out.println("          Agregar Presentación        ");
     System.out.println("======================================" + "\n");
+    
     System.out.print("Ingrese el día de la presentación " + "\n" + "(lun, mar, mie, jue, vie, sab): ");
     String dia = scanner.nextLine().toLowerCase();
 
@@ -110,7 +121,7 @@ public class Main {
 
     limpiarPantalla();
 
-    System.out.println("Presentación agregada con éxito para el día " + dia + "." + "\n\n");
+    System.out.println("Presentación agregada con éxito para el día " + dia + "." + "\n");
   }
 
   private static void mostrarPresentacion() {
@@ -119,11 +130,11 @@ public class Main {
     System.out.println("         Mostrar Presentaciones       ");
     System.out.println("======================================\n");
     
-    System.out.print("Ingrese el día de la presentación que desea ver (lun, mar, mie, jue, vie, sab): ");
+    System.out.print("Ingrese el día de la presentación que desea ver" + "\n" + "(lun, mar, mie, jue, vie, sab): ");
     String dia = scanner.nextLine().toLowerCase();
 
     if (!presentaciones.containsKey(dia)) {
-      System.out.println("Día inválido. Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab).");
+      System.out.println("Día inválido. Por favor, ingrese un día válido" + "\n" + "(lun, mar, mie, jue, vie, sab).");
       return;
     }
 
@@ -138,9 +149,36 @@ public class Main {
         presentacion.mostrarInformacion();
         System.out.println();
       }
-    }
+    }   
   }
 
+  private static void recalendarizarPresentacion() {
+    
+    System.out.println("======================================");
+    System.out.println("       Recalendarizar Presentación    ");
+    System.out.println("======================================\n");
+
+    System.out.print("Ingrese el día de la presentación que desea reprogramar " + "\n" + "(lun, mar, mie, jue, vie, sab).");
+    String dia = scanner.nextLine().toLowerCase();
+
+    if (!presentaciones.containsKey(dia)) {
+      System.out.println("Día inválido. Por favor, ingrese un día válido" + "\n" + "(lun, mar, mie, jue, vie, sab).");
+      return;
+    }
+
+    List<Presentacion> listaPresentaciones = presentaciones.get(dia);
+
+    if (listaPresentaciones.isEmpty()){
+      System.out.println("No hay presentaciones registradas para el día " + dia + ".");
+      return;
+    } else {
+      
+    }
+    
+  }
+
+  // Auxiliares
+  
   public static void limpiarPantalla() {
       System.out.print("\033[H\033[2J");  
       System.out.flush();

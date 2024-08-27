@@ -155,8 +155,6 @@ public class Main {
     }   
   }
 
-  // @@zvixss termina esto bro 
-
   private static void recalendarizarPresentacion() {
     
     System.out.println("======================================");
@@ -175,9 +173,8 @@ public class Main {
 
     if (listaPresentaciones.isEmpty()){
       System.out.println("No hay presentaciones registradas para el día " + dia + ".");
-      return;
     } else {
-      
+  
     }
     
   }
@@ -189,8 +186,10 @@ public class Main {
       System.out.flush();
   }
   
+  @SuppressWarnings("resource")
   public static void presioneTecla() {
-      Scanner scanner = new Scanner(System.in);
-      scanner.nextLine();
-  }
+    Scanner inputScanner = new Scanner(System.in);
+    inputScanner.nextLine();
+}
+
 }

@@ -189,6 +189,5 @@ public class Main {
   public static void presioneTecla() {
       Scanner scanner = new Scanner(System.in);
       scanner.nextLine();
-      scanner.close();
   }
 }

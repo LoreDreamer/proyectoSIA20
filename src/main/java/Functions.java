@@ -1,0 +1,125 @@
+import java.util.*;
+
+public class Functions {
+
+  private final static Scanner scanner = new Scanner(System.in);
+
+  public static void agregarPresentacion(Map<String, List<Presentacion>> presentaciones) {
+    
+    System.out.println("======================================");
+    System.out.println("          Agregar Presentación        ");
+    System.out.println("======================================" + "\n");
+    
+    System.out.print("Ingrese el día de la presentación " + "\n" + "(lun, mar, mie, jue, vie, sab): ");
+    String dia = scanner.nextLine().toLowerCase();
+
+    if (!presentaciones.containsKey(dia)) {
+      limpiarPantalla();
+      System.out.println("\n" + "Por favor, ingrese un día válido " + "\n" + "(lun, mar, mie, jue, vie, sab)." + "\n\n");
+      return;
+    }
+
+    System.out.print("\n" + "Ingrese el título de la presentación: ");
+    String titulo = scanner.nextLine();
+
+    System.out.print("\n" + "Ingrese la hora de inicio: ");
+    String horaInicio = scanner.nextLine();
+
+    System.out.print("\n" + "Ingrese la hora de fin: ");
+    String horaFin = scanner.nextLine();
+
+    System.out.print("\n" + "Ingrese la sala: ");
+    String sala = scanner.nextLine();
+
+    System.out.print("\n" + "Ingrese número de asistentes: ");
+    int numParticipants = Integer.parseInt(scanner.nextLine());
+
+    ArrayList<Persona> participantes = new ArrayList<Persona>();
+
+    Presentacion nuevaPresentacion = new Presentacion(titulo, horaInicio, horaFin, sala, participantes);
+
+    for (int i = 0; i < numParticipants; i++) {
+      System.out.print("\n" + "Ingrese el nombre del asistente: ");
+      String newName = scanner.nextLine();
+
+      System.out.print("\n" + "Ingrese el rut del asistente: ");
+      String newRut = scanner.nextLine();
+
+      System.out.print("\n" + "Ingrese si es expositor (true/false): ");
+      boolean esExpositor = Boolean.parseBoolean(scanner.nextLine());
+
+      Persona tempPersona = new Persona(newName, newRut, esExpositor);
+      nuevaPresentacion.addParticipant(tempPersona);
+    }
+
+    presentaciones.get(dia).add(nuevaPresentacion);
+
+    limpiarPantalla();
+
+    System.out.println("Presentación agregada con éxito para el día " + dia + "." + "\n");
+  }
+
+  public static void mostrarPresentacion(Map<String, List<Presentacion>> presentaciones) {
+
+    System.out.println("======================================");
+    System.out.println("         Mostrar Presentaciones       ");
+    System.out.println("======================================\n");
+    
+    System.out.print("Ingrese el día de la presentación que desea ver" + "\n" + "(lun, mar, mie, jue, vie, sab): ");
+    String dia = scanner.nextLine().toLowerCase();
+
+    if (!presentaciones.containsKey(dia)) {
+      System.out.println("Día inválido. Por favor, ingrese un día válido" + "\n" + "(lun, mar, mie, jue, vie, sab).");
+      return;
+    }
+
+    List<Presentacion> listaPresentaciones = presentaciones.get(dia);
+
+    limpiarPantalla();
+    
+    if (listaPresentaciones.isEmpty()) {
+      System.out.println("No hay presentaciones registradas para el día " + dia + ".");
+    } else {
+      for (Presentacion presentacion : listaPresentaciones) {
+        presentacion.mostrarInformacion();
+        System.out.println();
+      }
+    }
+  }
+
+  public static void recalendarizarPresentacion(Map<String, List<Presentacion>> presentaciones) {
+    
+    System.out.println("======================================");
+    System.out.println("       Recalendarizar Presentación    ");
+    System.out.println("======================================\n");
+
+    System.out.print("Ingrese el día de la presentación que desea reprogramar " + "\n" + "(lun, mar, mie, jue, vie, sab).");
+    String dia = scanner.nextLine().toLowerCase();
+
+    if (!presentaciones.containsKey(dia)) {
+      System.out.println("Día inválido. Por favor, ingrese un día válido" + "\n" + "(lun, mar, mie, jue, vie, sab).");
+      return;
+    }
+
+    List<Presentacion> listaPresentaciones = presentaciones.get(dia);
+
+    if (listaPresentaciones.isEmpty()){
+      System.out.println("No hay presentaciones registradas para el día " + dia + ".");
+    } else {
+      // Aquí va el código para recalendarizar la presentación
+    }
+  }
+
+  // Métodos auxiliares
+
+  public static void limpiarPantalla() {
+    System.out.print("\033[H\033[2J");  
+    System.out.flush();
+  }
+  
+  @SuppressWarnings("resource")
+  public static void presioneTecla() {
+    Scanner inputScanner = new Scanner(System.in);
+    inputScanner.nextLine();
+  }
+}

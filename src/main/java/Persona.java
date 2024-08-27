@@ -1,10 +1,10 @@
 public class Persona {
 
     private String nombre;
-    private int rut;
+    private String rut;
     private boolean esExpositor;
 
-    public Persona(String nombre, int rut, boolean esExpositor) {
+    public Persona(String nombre, String rut, boolean esExpositor) {
         this.nombre = nombre;
         this.rut = rut;
         this.esExpositor = esExpositor;
@@ -14,7 +14,7 @@ public class Persona {
         return nombre;
     }
 
-    public int getRut() {
+    public String getRut() {
         return rut;
     }
 
@@ -26,7 +26,7 @@ public class Persona {
         this.nombre = nombre;
     }
 
-    public void setRut(int rut) {
+    public void setRut(String rut) {
         this.rut = rut;
     }
 

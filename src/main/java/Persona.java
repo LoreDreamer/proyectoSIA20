@@ -14,20 +14,20 @@ public class Persona {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public int getRut() {
         return rut;
     }
 
-    public void setRut(int rut) {
-        this.rut = rut;
-    }
-
     public boolean isEsExpositor() {
         return esExpositor;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setRut(int rut) {
+        this.rut = rut;
     }
 
     public void setEsExpositor(boolean esExpositor) {

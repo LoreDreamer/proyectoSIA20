@@ -19,28 +19,32 @@ public class Presentacion {
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
     public String getHoraInicio() {
         return horaInicio;
-    }
-
-    public void setHoraInicio(String horaInicio) {
-        this.horaInicio = horaInicio;
     }
 
     public String getHoraFin() {
         return horaFin;
     }
 
-    public void setHoraFin(String horaFin) {
-        this.horaFin = horaFin;
-    }
-
     public String getSala() {
         return sala;
+    }
+
+    public Persona[] getLista() {
+        return listaParticipante;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public void setHoraInicio(String horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public void setHoraFin(String horaFin) {
+        this.horaFin = horaFin;
     }
 
     public void setSala(String sala) {
@@ -49,10 +53,6 @@ public class Presentacion {
 
     public void setLista(Persona[] listaParticipante) {
         this.listaParticipante = listaParticipante;
-    }
-
-    public Persona[] getLista() {
-        return listaParticipante;
     }
 
     public void mostrarListaParticipantes() {

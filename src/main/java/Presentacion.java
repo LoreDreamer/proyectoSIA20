@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Presentacion {
 
@@ -5,9 +6,9 @@ public class Presentacion {
     private String horaInicio;
     private String horaFin;
     private String sala;
-    private Persona[] listaParticipante;
+    private ArrayList<Persona> listaParticipante;
 
-    public Presentacion(String titulo, String horaInicio, String horaFin, String sala, Persona[] listaParticipante) {
+    public Presentacion(String titulo, String horaInicio, String horaFin, String sala, ArrayList<Persona> listaParticipante) {
         this.titulo = titulo;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
@@ -31,7 +32,7 @@ public class Presentacion {
         return sala;
     }
 
-    public Persona[] getLista() {
+    public ArrayList<Persona> getLista() {
         return listaParticipante;
     }
 
@@ -51,8 +52,16 @@ public class Presentacion {
         this.sala = sala;
     }
 
-    public void setLista(Persona[] listaParticipante) {
+    public void setLista(ArrayList<Persona> listaParticipante) {
         this.listaParticipante = listaParticipante;
+    }
+
+    public void addParticipant(Persona newPersona) {
+        listaParticipante.add(newPersona);
+    }
+
+    public void removeParticipant(Persona newPersona) {
+        listaParticipante.remove(newPersona);
     }
 
     public void mostrarListaParticipantes() {

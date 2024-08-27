@@ -101,22 +101,25 @@ public class Main {
     System.out.print("\n" + "Ingrese número de asistentes: ");
     int numParticipants = Integer.parseInt(scanner.nextLine());
 
-    Persona[] participantes = new Persona[numParticipants];
+    ArrayList<Persona> participantes = new ArrayList<Persona>();
+
+    Presentacion nuevaPresentacion = new Presentacion(titulo, horaInicio, horaFin, sala, participantes);
 
     for (int i = 0; i < numParticipants; i++) {
       System.out.print("\n" + "Ingrese el nombre del asistente: ");
-      String participante = scanner.nextLine();
+      String newName = scanner.nextLine();
 
       System.out.print("\n" + "Ingrese el rut del asistente: ");
-      int rut = Integer.parseInt(scanner.nextLine());
+      int newRut = Integer.parseInt(scanner.nextLine());
 
       System.out.print("\n" + "Ingrese si es expositor (true/false): ");
       boolean esExpositor = Boolean.parseBoolean(scanner.nextLine());
 
-      participantes[i] = new Persona(participante, rut, esExpositor);
+      Persona tempPersona = new Persona(newName, newRut, esExpositor);
+      nuevaPresentacion.addParticipant(tempPersona);
+
     }
 
-    Presentacion nuevaPresentacion = new Presentacion(titulo, horaInicio, horaFin, sala, participantes);
     presentaciones.get(dia).add(nuevaPresentacion);
 
     limpiarPantalla();

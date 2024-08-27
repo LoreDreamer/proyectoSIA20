@@ -2,8 +2,8 @@ import java.util.*;
 
 public class Main {
 
-  private static Map<String, List<Presentacion>> presentaciones = new HashMap<String, List<Presentacion>>();
-  private static Scanner scanner = new Scanner(System.in);
+  private final static Map<String, List<Presentacion>> presentaciones = new HashMap<String, List<Presentacion>>();
+  private final static Scanner scanner = new Scanner(System.in);
 
   public static void main(String[] args) {
 
@@ -186,6 +186,7 @@ public class Main {
   
   public static void presioneTecla() {
       Scanner scanner = new Scanner(System.in);
-      scanner.nextLine(); 
+      scanner.nextLine();
+      scanner.close();
   }
 }

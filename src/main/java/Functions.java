@@ -93,11 +93,13 @@ public class Functions {
     System.out.println("       Recalendarizar Presentación    ");
     System.out.println("======================================\n");
 
-    System.out.print("Ingrese el día de la presentación que desea reprogramar " + "\n" + "(lun, mar, mie, jue, vie, sab).");
+    System.out.print("Ingrese el día de la presentación que desea reprogramar (lun, mar, mie, jue, vie, sab): ");
     String dia = scanner.nextLine().toLowerCase();
 
     if (!presentaciones.containsKey(dia)) {
-      System.out.println("Día inválido. Por favor, ingrese un día válido" + "\n" + "(lun, mar, mie, jue, vie, sab).");
+      System.out.println("Día inválido. Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab).");
+      presioneTecla();
+
       return;
     }
 
@@ -105,6 +107,8 @@ public class Functions {
 
     if (listaPresentaciones.isEmpty()){
       System.out.println("No hay presentaciones registradas para el día " + dia + ".");
+      presioneTecla();
+
       return;
     }
 
@@ -122,34 +126,42 @@ public class Functions {
 
     if (newPresentacion == null) {
       System.out.println("No se encontró ninguna presentación con el título " + titulo + ".");
+      presioneTecla();
+
       return;
     }
 
-    System.out.println("Detalles actuales de la presentación:");
+    System.out.println("\n\n");
     newPresentacion.mostrarInformacion();
     
-    System.out.print("Ingrese el nuevo día para la presentación (lun, mar, mie, jue, vie, sab): ");
+    System.out.print("\n\nIngrese el nuevo día para la presentación (lun, mar, mie, jue, vie, sab): ");
     String nuevoDia = scanner.nextLine().toLowerCase();
 
     if (!presentaciones.containsKey(nuevoDia)) {
-      System.out.println("Día inválido. Por favor, ingrese un día válido" + "\n" + "(lun, mar, mie, jue, vie, sab).");
+      System.out.println("Día inválido. Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab).");
+      presioneTecla();
+      
       return;
     }
 
     presentaciones.get(dia).remove(newPresentacion);
 
-    System.out.println("Ingrese la nueva hora de inicio para la presentación: ");
+    System.out.print("Ingrese la nueva hora de inicio para la presentación: ");
     String nuevaHoraInicio = scanner.nextLine();
 
-    System.out.println("Ingrese la nueva hora de fin para la presentación: ");
+    System.out.print("Ingrese la nueva hora de fin para la presentación: ");
     String nuevaHoraFin = scanner.nextLine();
 
     newPresentacion.setHoraInicio(nuevaHoraInicio);
     newPresentacion.setHoraFin(nuevaHoraFin);
 
     presentaciones.get(nuevoDia).add(newPresentacion);
-    System.out.println("Presentación cambiada con éxito");
 
+    System.out.println("\nPresentación cambiada con éxito.");
+    System.out.println("Presione una tecla para continuar.");
+
+    presioneTecla();
+    limpiarPantalla();
 
   }
 

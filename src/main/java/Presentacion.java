@@ -56,15 +56,45 @@ public class Presentacion {
         this.listaParticipante = listaParticipante;
     }
 
-    public void addParticipant(Persona newPersona) {
-        listaParticipante.add(newPersona);
+    public void addParticipant(String nombre, String rut) {
+        Persona tempPersona = new Persona(nombre, rut);
+        listaParticipante.add(tempPersona);
     }
+
+    public void addParticipant(String nombre, String rut, boolean esExpositor) {
+        Persona tempPersona = new Persona(nombre, rut, esExpositor);
+        listaParticipante.add(tempPersona);
+    }
+
+    public Persona findParticipantByRut(String rut) {
+        for (Persona persona : listaParticipante) {
+            if (persona.getRut().equalsIgnoreCase(rut) && !persona.isEsExpositor()) {
+                return persona;
+            }
+        }
+        return null;
+    }
+
+    public void modifyParticipant(Persona participante, String nuevoNombre, String nuevoRut) {
+        participante.setNombre(nuevoNombre);
+        participante.setRut(nuevoRut);
+    }
+
+    public void modifyParticipant(Persona participante, boolean esExpositor) {
+        participante.setEsExpositor(esExpositor);
+    }
+    
 
     public void removeParticipant(Persona newPersona) {
         listaParticipante.remove(newPersona);
     }
 
     public void mostrarListaParticipantes() {
+
+        System.out.println("\n======================");
+        System.out.println("Lista de participantes");
+        System.out.println("======================\n");
+
         for (Persona persona : listaParticipante) {
             persona.mostrarInformacion();
         }
@@ -81,32 +111,7 @@ public class Presentacion {
         System.out.println("Hora de fin: " + horaFin);
         System.out.println("Sala: " + sala);
 
-        System.out.println("\n======================");
-        System.out.println("Lista de participantes");
-        System.out.println("======================\n");
-
         mostrarListaParticipantes();
     }
 
-    // Método sobrecargado para mostrar solo expositores
-    public void mostrarInformacion(boolean soloExpositores) {
-        System.out.println("\n==============================");
-        System.out.println("Información de la presentación");
-        System.out.println("==============================\n\n");
-
-        System.out.println("Titulo: " + titulo);
-        System.out.println("Hora de inicio: " + horaInicio);
-        System.out.println("Hora de fin: " + horaFin);
-        System.out.println("Sala: " + sala);
-
-        System.out.println("\n===============================");
-        System.out.println(soloExpositores ? "Lista de expositores" : "Lista de participantes");
-        System.out.println("===============================\n\n");
-
-        for (Persona persona : listaParticipante) {
-            if (!soloExpositores || persona.isEsExpositor()) {
-                persona.mostrarInformacion();
-            }
-        }
-    }
 }

@@ -58,8 +58,7 @@ public class Functions {
       System.out.print("Ingrese si es expositor (true/false): ");
       boolean esExpositor = Boolean.parseBoolean(scanner.nextLine());
 
-      Persona tempPersona = new Persona(newName, newRut, esExpositor);
-      nuevaPresentacion.addParticipant(tempPersona);
+      nuevaPresentacion.addParticipant(newName, newRut, esExpositor);
     }
 
     presentaciones.get(dia).add(nuevaPresentacion);
@@ -224,12 +223,8 @@ public class Functions {
 
           System.out.print("Ingrese el RUT del nuevo asistente: ");
           String rut = scanner.nextLine();
-
-          System.out.print("Ingrese si es expositor (true/false): ");
-          boolean esExpositor = Boolean.parseBoolean(scanner.nextLine());
-
-          Persona nuevoAsistente = new Persona(nombre, rut, esExpositor);
-          presentacionEncontrada.addParticipant(nuevoAsistente);
+          
+          presentacionEncontrada.addParticipant(nombre, rut);
 
           System.out.println("\nAsistente añadido con éxito.");
           System.out.println("Presione enter para continuar...");
@@ -242,16 +237,18 @@ public class Functions {
           System.out.print("Ingrese el RUT del asistente que desea cambiar: ");
           String rutAsistente = scanner.nextLine();
 
-          Persona asistenteEncontrado = null;
-          for (Persona persona : presentacionEncontrada.getLista()) {
-            if (persona.getRut().equalsIgnoreCase(rutAsistente) && !persona.isEsExpositor()) {
-              asistenteEncontrado = persona;
-              break;
-            }
+          Persona tempPersona = presentacionEncontrada.findParticipantByRut(rutAsistente);
+
+          if (tempPersona == null) {
+            System.out.println("No se encontró ningún asistente con el RUT " + rutAsistente + ".");
+            break;
           }
 
-          if (asistenteEncontrado == null) {
-            System.out.println("No se encontró ningún asistente con el RUT " + rutAsistente + ".");
+          System.out.print("¿Desea darle permisos de expositor al asistente? (true/false)");
+          boolean esExpositor = Boolean.parseBoolean(scanner.nextLine());
+
+          if (esExpositor) {
+            presentacionEncontrada.modifyParticipant(tempPersona, esExpositor);
             break;
           }
 
@@ -262,9 +259,7 @@ public class Functions {
           System.out.print("Ingrese el nuevo RUT del asistente: ");
           String nuevoRut = scanner.nextLine();
 
-          // Actualizar asistente
-          asistenteEncontrado.setNombre(nuevoNombre);
-          asistenteEncontrado.setRut(nuevoRut);
+          presentacionEncontrada.modifyParticipant(tempPersona, nuevoNombre, nuevoRut);
 
           System.out.println("\n\nAsistente actualizado con éxito.");
           System.out.println("Presione enter para continuar...");

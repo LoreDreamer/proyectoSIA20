@@ -10,6 +10,12 @@ public class Persona {
         this.esExpositor = esExpositor;
     }
 
+    public Persona(String nombre, String rut) {
+        this.nombre = nombre;
+        this.rut = rut;
+        esExpositor = false;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -33,8 +39,7 @@ public class Persona {
     public void setEsExpositor(boolean esExpositor) {
         this.esExpositor = esExpositor;
     }
-
-    // Método original
+    
     public void mostrarInformacion() {
         // JOptionPane.showMessageDialog(null, "Nombre: "+nombre);
         // int cosa = Integer.parseInt(JOptionPane.showInputDialog("test"));
@@ -42,11 +47,5 @@ public class Persona {
         System.out.println("Nombre : " + nombre);
         System.out.println("Rut : " + rut);
         System.out.println(esExpositor ? "Expositor\n" : "Asistente\n");
-    }
-
-    // Método sobrecargado que incluye una descripción adicional
-    public void mostrarInformacion(String descripcion) {
-        System.out.println(descripcion);
-        mostrarInformacion(); // Llama al método original
     }
 }

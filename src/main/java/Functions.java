@@ -105,9 +105,52 @@ public class Functions {
 
     if (listaPresentaciones.isEmpty()){
       System.out.println("No hay presentaciones registradas para el día " + dia + ".");
-    } else {
-      // Aquí va el código para recalendarizar la presentación
+      return;
     }
+
+    System.out.print("Ingrese el título de la presentación: ");
+    String titulo = scanner.nextLine();
+
+    Presentacion newPresentacion = null;
+
+    for (Presentacion presentacion : listaPresentaciones) {
+      if (presentacion.getTitulo().equalsIgnoreCase(titulo)) {
+        newPresentacion = presentacion;
+        break;
+      }
+    } 
+
+    if (newPresentacion == null) {
+      System.out.println("No se encontró ninguna presentación con el título " + titulo + ".");
+      return;
+    }
+
+    System.out.println("Detalles actuales de la presentación:");
+    newPresentacion.mostrarInformacion();
+    
+    System.out.print("Ingrese el nuevo día para la presentación (lun, mar, mie, jue, vie, sab): ");
+    String nuevoDia = scanner.nextLine().toLowerCase();
+
+    if (!presentaciones.containsKey(nuevoDia)) {
+      System.out.println("Día inválido. Por favor, ingrese un día válido" + "\n" + "(lun, mar, mie, jue, vie, sab).");
+      return;
+    }
+
+    presentaciones.get(dia).remove(newPresentacion);
+
+    System.out.println("Ingrese la nueva hora de inicio para la presentación: ");
+    String nuevaHoraInicio = scanner.nextLine();
+
+    System.out.println("Ingrese la nueva hora de fin para la presentación: ");
+    String nuevaHoraFin = scanner.nextLine();
+
+    newPresentacion.setHoraInicio(nuevaHoraInicio);
+    newPresentacion.setHoraFin(nuevaHoraFin);
+
+    presentaciones.get(nuevoDia).add(newPresentacion);
+    System.out.println("Presentación cambiada con éxito");
+
+
   }
 
   // Métodos auxiliares

@@ -1,4 +1,8 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class Functions {
 
@@ -8,44 +12,50 @@ public class Functions {
     
     System.out.println("======================================");
     System.out.println("          Agregar Presentación        ");
-    System.out.println("======================================" + "\n");
+    System.out.println("======================================\n");
     
-    System.out.print("Ingrese el día de la presentación " + "\n" + "(lun, mar, mie, jue, vie, sab): ");
+    System.out.print("Ingrese el día de la presentación (lun, mar, mie, jue, vie, sab): ");
     String dia = scanner.nextLine().toLowerCase();
 
     if (!presentaciones.containsKey(dia)) {
-      limpiarPantalla();
-      System.out.println("\n" + "Por favor, ingrese un día válido " + "\n" + "(lun, mar, mie, jue, vie, sab)." + "\n\n");
+      System.out.println("\n" + "Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab)." + "\n\n");
       return;
     }
 
-    System.out.print("\n" + "Ingrese el título de la presentación: ");
+    System.out.print("Ingrese el título de la presentación: ");
     String titulo = scanner.nextLine();
 
-    System.out.print("\n" + "Ingrese la hora de inicio: ");
+    System.out.print("Ingrese la hora de inicio: ");
     String horaInicio = scanner.nextLine();
 
-    System.out.print("\n" + "Ingrese la hora de fin: ");
+    System.out.print("Ingrese la hora de fin: ");
     String horaFin = scanner.nextLine();
 
-    System.out.print("\n" + "Ingrese la sala: ");
+    System.out.print("Ingrese la sala: ");
     String sala = scanner.nextLine();
 
-    System.out.print("\n" + "Ingrese número de asistentes: ");
+    System.out.print("Ingrese número de asistentes: ");
     int numParticipants = Integer.parseInt(scanner.nextLine());
 
     ArrayList<Persona> participantes = new ArrayList<Persona>();
 
+    limpiarPantalla();
+
+    System.out.println("======================================");
+    System.out.println("         Agregar Participantes        ");
+    System.out.println("======================================\n");
+
+
     Presentacion nuevaPresentacion = new Presentacion(titulo, horaInicio, horaFin, sala, participantes);
 
     for (int i = 0; i < numParticipants; i++) {
-      System.out.print("\n" + "Ingrese el nombre del asistente: ");
+      System.out.print("Ingrese el nombre del asistente: ");
       String newName = scanner.nextLine();
 
-      System.out.print("\n" + "Ingrese el rut del asistente: ");
+      System.out.print("Ingrese el rut del asistente: ");
       String newRut = scanner.nextLine();
 
-      System.out.print("\n" + "Ingrese si es expositor (true/false): ");
+      System.out.print("Ingrese si es expositor (true/false): ");
       boolean esExpositor = Boolean.parseBoolean(scanner.nextLine());
 
       Persona tempPersona = new Persona(newName, newRut, esExpositor);
@@ -54,9 +64,7 @@ public class Functions {
 
     presentaciones.get(dia).add(nuevaPresentacion);
 
-    limpiarPantalla();
-
-    System.out.println("Presentación agregada con éxito para el día " + dia + "." + "\n");
+    System.out.println("\nPresentación agregada con éxito para el día " + dia + "." + "\n");
   }
 
   public static void mostrarPresentacion(Map<String, List<Presentacion>> presentaciones) {
@@ -65,11 +73,11 @@ public class Functions {
     System.out.println("         Mostrar Presentaciones       ");
     System.out.println("======================================\n");
     
-    System.out.print("Ingrese el día de la presentación que desea ver" + "\n" + "(lun, mar, mie, jue, vie, sab): ");
+    System.out.print("Ingrese el día de la presentación que desea ver (lun, mar, mie, jue, vie, sab): ");
     String dia = scanner.nextLine().toLowerCase();
 
     if (!presentaciones.containsKey(dia)) {
-      System.out.println("Día inválido. Por favor, ingrese un día válido" + "\n" + "(lun, mar, mie, jue, vie, sab).");
+      System.out.println("Día inválido. Por favor, ingrese un día válido(lun, mar, mie, jue, vie, sab).");
       return;
     }
 
@@ -97,18 +105,14 @@ public class Functions {
     String dia = scanner.nextLine().toLowerCase();
 
     if (!presentaciones.containsKey(dia)) {
-      System.out.println("Día inválido. Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab).");
-      presioneTecla();
-
+      System.out.println("Día inválido. Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab).\n");
       return;
     }
 
     List<Presentacion> listaPresentaciones = presentaciones.get(dia);
 
     if (listaPresentaciones.isEmpty()){
-      System.out.println("No hay presentaciones registradas para el día " + dia + ".");
-      presioneTecla();
-
+      System.out.println("No hay presentaciones registradas para el día " + dia + ".\n");
       return;
     }
 
@@ -125,22 +129,18 @@ public class Functions {
     } 
 
     if (newPresentacion == null) {
-      System.out.println("No se encontró ninguna presentación con el título " + titulo + ".");
-      presioneTecla();
-
+      System.out.println("No se encontró ninguna presentación con el título " + titulo + ".\n");
       return;
     }
 
-    System.out.println("\n\n");
+    System.out.println("\n");
     newPresentacion.mostrarInformacion();
     
-    System.out.print("\n\nIngrese el nuevo día para la presentación (lun, mar, mie, jue, vie, sab): ");
+    System.out.print("\nIngrese el nuevo día para la presentación (lun, mar, mie, jue, vie, sab): ");
     String nuevoDia = scanner.nextLine().toLowerCase();
 
     if (!presentaciones.containsKey(nuevoDia)) {
-      System.out.println("Día inválido. Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab).");
-      presioneTecla();
-      
+      System.out.println("Día inválido. Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab).\n");
       return;
     }
 
@@ -158,10 +158,6 @@ public class Functions {
     presentaciones.get(nuevoDia).add(newPresentacion);
 
     System.out.println("\nPresentación cambiada con éxito.");
-    System.out.println("Presione una tecla para continuar.");
-
-    presioneTecla();
-    limpiarPantalla();
 
   }
 

@@ -19,7 +19,7 @@ public class Main {
 
     while (true) {
 
-      System.out.println("====================================================");
+      System.out.println("\n====================================================");
       System.out.println("                MENU DE PRESENTACIONES              ");
       System.out.println("====================================================\n");
       System.out.println("1. Registrar presentación");
@@ -53,6 +53,9 @@ public class Main {
         case 3:  
           Functions.limpiarPantalla();
           Functions.recalendarizarPresentacion(presentaciones);
+          System.out.println("Presione enter para continuar...");
+          Functions.presioneTecla();
+          Functions.limpiarPantalla();
           break;
           
         case 4:

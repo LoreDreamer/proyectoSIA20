@@ -37,10 +37,11 @@ public class Persona {
     // Método original
     public void mostrarInformacion() {
         // JOptionPane.showMessageDialog(null, "Nombre: "+nombre);
-        // int cosa = Integer.parseInt(JOptionPane.showInputDialog("negros"));
+        // int cosa = Integer.parseInt(JOptionPane.showInputDialog("test"));
+
         System.out.println("Nombre : " + nombre);
         System.out.println("Rut : " + rut);
-        System.out.println(esExpositor ? "Expositor" : "Asistente");
+        System.out.println(esExpositor ? "Expositor\n" : "Asistente\n");
     }
 
     // Método sobrecargado que incluye una descripción adicional

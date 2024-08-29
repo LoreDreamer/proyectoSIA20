@@ -70,18 +70,18 @@ public class Presentacion {
         }
     }
 
-    // Método original para mostrar información
     public void mostrarInformacion() {
-        System.out.println("==============================");
+
+        System.out.println("\n==============================");
         System.out.println("Información de la presentación");
-        System.out.println("==============================\n");
+        System.out.println("==============================\n\n");
 
         System.out.println("Titulo: " + titulo);
         System.out.println("Hora de inicio: " + horaInicio);
         System.out.println("Hora de fin: " + horaFin);
         System.out.println("Sala: " + sala);
 
-        System.out.println("======================");
+        System.out.println("\n======================");
         System.out.println("Lista de participantes");
         System.out.println("======================\n");
 
@@ -90,18 +90,18 @@ public class Presentacion {
 
     // Método sobrecargado para mostrar solo expositores
     public void mostrarInformacion(boolean soloExpositores) {
-        System.out.println("==============================");
+        System.out.println("\n==============================");
         System.out.println("Información de la presentación");
-        System.out.println("==============================\n");
+        System.out.println("==============================\n\n");
 
         System.out.println("Titulo: " + titulo);
         System.out.println("Hora de inicio: " + horaInicio);
         System.out.println("Hora de fin: " + horaFin);
         System.out.println("Sala: " + sala);
 
-        System.out.println("===============================");
+        System.out.println("\n===============================");
         System.out.println(soloExpositores ? "Lista de expositores" : "Lista de participantes");
-        System.out.println("===============================\n");
+        System.out.println("===============================\n\n");
 
         for (Persona persona : listaParticipante) {
             if (!soloExpositores || persona.isEsExpositor()) {

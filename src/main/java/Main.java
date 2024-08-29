@@ -15,6 +15,8 @@ public class Main {
     presentaciones.put("vie", new ArrayList<Presentacion>());
     presentaciones.put("sab", new ArrayList<Presentacion>());
 
+    Functions.inicializarDatos(presentaciones);
+
     while (true) {
 
       System.out.println("====================================================");

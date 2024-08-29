@@ -122,4 +122,19 @@ public class Functions {
     Scanner inputScanner = new Scanner(System.in);
     inputScanner.nextLine();
   }
+
+  public static void inicializarDatos(Map<String, List<Presentacion>> presentaciones) {
+
+    Persona expositor1 = new Persona("Carlos Pérez", "12345678-9", true);
+    Persona asistente1 = new Persona("Ana González", "11765432-1", false);
+    Persona expositor2 = new Persona("María Rodríguez", "21456789-0", true);
+
+    Presentacion presentacion1 = new Presentacion("Introducción a la IA", "10:00", "11:00", "IBC 2-12", new ArrayList<>(Arrays.asList(expositor1, asistente1)));
+    Presentacion presentacion2 = new Presentacion("Avances en Machine Learning", "12:00", "13:00", "IBC 2-4", new ArrayList<>(Arrays.asList(expositor2)));
+
+    presentaciones.get("lun").add(presentacion1);
+    presentaciones.get("mar").add(presentacion2);
+  }
+
+  
 }

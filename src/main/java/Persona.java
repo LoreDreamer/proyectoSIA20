@@ -36,6 +36,8 @@ public class Persona {
 
     // Método original
     public void mostrarInformacion() {
+        // JOptionPane.showMessageDialog(null, "Nombre: "+nombre);
+        // int cosa = Integer.parseInt(JOptionPane.showInputDialog("negros"));
         System.out.println("Nombre : " + nombre);
         System.out.println("Rut : " + rut);
         System.out.println(esExpositor ? "Expositor" : "Asistente");

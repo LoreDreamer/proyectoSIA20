@@ -113,5 +113,4 @@ public class Presentacion {
 
         mostrarListaParticipantes();
     }
-
 }

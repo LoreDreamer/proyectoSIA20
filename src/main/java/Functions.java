@@ -1,8 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Functions {
 
@@ -331,6 +327,4 @@ public class Functions {
     presentaciones.get("lun").add(presentacion1);
     presentaciones.get("mar").add(presentacion2);
   }
-
-  
 }

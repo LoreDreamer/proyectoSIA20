@@ -209,7 +209,7 @@ public class Functions {
       System.out.print("Ingrese su opción: ");
 
       int opcion = scanner.nextInt();
-      scanner.nextLine(); 
+      scanner.nextLine();
 
       switch (opcion) {
         case 1: // Añadir nuevo asistente
@@ -219,6 +219,13 @@ public class Functions {
 
           System.out.print("Ingrese el RUT del nuevo asistente: ");
           String rut = scanner.nextLine();
+
+          for (Persona persona : presentacionEncontrada.getLista()) {
+            if (persona.compararCon(nombre, rut)) {
+                System.out.println("Ya existe un asistente con el nombre y RUT proporcionados.");
+                break;
+            }
+          }
           
           presentacionEncontrada.addParticipant(nombre, rut);
 
@@ -233,18 +240,17 @@ public class Functions {
           System.out.print("Ingrese el RUT del asistente que desea cambiar: ");
           String rutAsistente = scanner.nextLine();
 
-          Persona tempPersona = presentacionEncontrada.findParticipantByRut(rutAsistente);
+          Persona tempPersona = null;
+
+          for (Persona persona : presentacionEncontrada.getLista()) {
+            if (persona.compararCon(rutAsistente)) {
+                tempPersona = persona;
+                break;
+            }
+          }
 
           if (tempPersona == null) {
             System.out.println("No se encontró ningún asistente con el RUT " + rutAsistente + ".");
-            break;
-          }
-
-          System.out.print("¿Desea darle permisos de expositor al asistente? (true/false)");
-          boolean esExpositor = Boolean.parseBoolean(scanner.nextLine());
-
-          if (esExpositor) {
-            presentacionEncontrada.modifyParticipant(tempPersona, esExpositor);
             break;
           }
 
@@ -253,6 +259,13 @@ public class Functions {
 
           System.out.print("Ingrese el nuevo RUT del asistente: ");
           String nuevoRut = scanner.nextLine();
+
+          for (Persona persona : presentacionEncontrada.getLista()) {
+            if (persona.compararCon(nuevoNombre, nuevoRut)) {
+                System.out.println("Ya existe un asistente con el nombre y RUT proporcionados.");
+                return;
+            }
+          }
 
           presentacionEncontrada.modifyParticipant(tempPersona, nuevoNombre, nuevoRut);
 
@@ -269,7 +282,7 @@ public class Functions {
 
             Persona asistenteASacar = null;
             for (Persona persona : presentacionEncontrada.getLista()) {
-              if (persona.getRut().equalsIgnoreCase(rutSacar)) {
+              if (persona.compararCon(rutSacar)) {
                 asistenteASacar = persona;
                 break;
               }

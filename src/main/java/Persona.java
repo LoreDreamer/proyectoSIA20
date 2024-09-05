@@ -39,6 +39,14 @@ public class Persona {
     public void setEsExpositor(boolean esExpositor) {
         this.esExpositor = esExpositor;
     }
+
+    public boolean compararCon(String rut) {
+        return this.rut.equals(rut);
+    }
+
+    public boolean compararCon(String nombre, String rut) {
+        return this.nombre.equalsIgnoreCase(nombre) && this.rut.equals(rut);
+    }
     
     public void mostrarInformacion() {
         // JOptionPane.showMessageDialog(null, "Nombre: "+nombre);

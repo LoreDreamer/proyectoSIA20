@@ -7,7 +7,6 @@ public class Main {
 
   public static void main(String[] args) {
 
-    // Inicializar el mapa con los días de la semana
     presentaciones.put("lun", new ArrayList<Presentacion>());
     presentaciones.put("mar", new ArrayList<Presentacion>());
     presentaciones.put("mie", new ArrayList<Presentacion>());

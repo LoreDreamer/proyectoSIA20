@@ -209,7 +209,7 @@ public class Functions {
       System.out.print("Ingrese su opción: ");
 
       int opcion = scanner.nextInt();
-      scanner.nextLine(); // Limpiar el buffer
+      scanner.nextLine(); 
 
       switch (opcion) {
         case 1: // Añadir nuevo asistente
@@ -248,7 +248,6 @@ public class Functions {
             break;
           }
 
-          // Obtener nuevos datos del asistente
           System.out.print("Ingrese el nuevo nombre del asistente: ");
           String nuevoNombre = scanner.nextLine();
 

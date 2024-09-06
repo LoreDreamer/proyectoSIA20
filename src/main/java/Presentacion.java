@@ -2,12 +2,14 @@ import java.util.ArrayList;
 
 public class Presentacion {
 
+    // Atributos de la clase Presentacion.
     private String titulo;
     private String horaInicio;
     private String horaFin;
     private String sala;
     private ArrayList<Persona> listaParticipante;
 
+     // Constructor para inicializar una presentación con todos sus atributos.
     public Presentacion(String titulo, String horaInicio, String horaFin, String sala, ArrayList<Persona> listaParticipante) {
         this.titulo = titulo;
         this.horaInicio = horaInicio;
@@ -16,6 +18,7 @@ public class Presentacion {
         this.listaParticipante = listaParticipante;
     }
 
+    // Métodos getter para acceder a los atributos de la presentación.
     public String getTitulo() {
         return titulo;
     }
@@ -36,6 +39,7 @@ public class Presentacion {
         return listaParticipante;
     }
 
+    // Métodos setter para modificar los atributos de la presentación.
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
@@ -56,17 +60,20 @@ public class Presentacion {
         this.listaParticipante = listaParticipante;
     }
 
-    public void addParticipant(String nombre, String rut) {
+    // Método para agregar un participante a la lista sin especificar si es expositor.
+    public void agregarParticipante(String nombre, String rut) {
         Persona tempPersona = new Persona(nombre, rut);
         listaParticipante.add(tempPersona);
     }
 
-    public void addParticipant(String nombre, String rut, boolean esExpositor) {
+    // Método para agregar un participante a la lista especificando si es expositor.
+    public void agregarParticipante(String nombre, String rut, boolean esExpositor) {
         Persona tempPersona = new Persona(nombre, rut, esExpositor);
         listaParticipante.add(tempPersona);
     }
 
-    public Persona findParticipantByRut(String rut) {
+    // Método para buscar un participante por su RUT, solo si no es expositor.
+    public Persona buscarParticipantePorRut(String rut) {
         for (Persona persona : listaParticipante) {
             if (persona.getRut().equalsIgnoreCase(rut) && !persona.isEsExpositor()) {
                 return persona;
@@ -75,20 +82,23 @@ public class Presentacion {
         return null;
     }
 
-    public void modifyParticipant(Persona participante, String nuevoNombre, String nuevoRut) {
+    // Método para modificar el nombre y RUT de un participante existente.
+    public void modificarParticipante(Persona participante, String nuevoNombre, String nuevoRut) {
         participante.setNombre(nuevoNombre);
         participante.setRut(nuevoRut);
     }
 
-    public void modifyParticipant(Persona participante, boolean esExpositor) {
+    // Método para modificar el estado de expositor de un participante existente.
+    public void modificarParticipante(Persona participante, boolean esExpositor) {
         participante.setEsExpositor(esExpositor);
     }
     
-
-    public void removeParticipant(Persona newPersona) {
-        listaParticipante.remove(newPersona);
+    // Método para eliminar un participante de la lista.
+    public void eliminarParticipante(Persona nuevaPersona) {
+        listaParticipante.remove(nuevaPersona);
     }
 
+    // Método para mostrar la lista de participantes de la presentación.
     public void mostrarListaParticipantes() {
 
         System.out.println("\n======================");
@@ -100,6 +110,7 @@ public class Presentacion {
         }
     }
 
+    // Método para mostrar toda la información de la presentación.
     public void mostrarInformacion() {
 
         System.out.println("\n==============================");

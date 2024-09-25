@@ -240,20 +240,17 @@ public class Functions {
         case 1: // Añadir nuevo asistente.
           
           System.out.print("Ingrese el nombre del nuevo asistente: ");
-          String nombre = scanner.nextLine();
+          String nuevoNombreA = scanner.nextLine();
 
           System.out.print("Ingrese el RUT del nuevo asistente: ");
-          String rut = scanner.nextLine();
+          String nuevoRutA = scanner.nextLine();
 
-          // Verifica si ya existe un asistente con el mismo nombre y RUT.
-          for (Persona persona : presentacionEncontrada.getLista()) {
-            if (persona.compararCon(nombre, rut)) {
-                System.out.println("Ya existe un asistente con el nombre y RUT proporcionados.");
-                break;
-            }
+          if (presentacionEncontrada.buscarParticipantePorEspecificacion(nuevoRutA, nuevoNombreA) != null) {
+            System.out.println("Ya existe un asistente con el nombre y RUT proporcionados.");
+            return;
           }
           
-          presentacionEncontrada.agregarParticipante(nombre, rut); // Agrega el nuevo asistente a la presentación.
+          presentacionEncontrada.agregarParticipante(nuevoNombreA, nuevoRutA); // Agrega el nuevo asistente a la presentación.
 
           System.out.println("\nAsistente añadido con éxito.");
           System.out.println("Presione enter para continuar...");
@@ -266,15 +263,7 @@ public class Functions {
           System.out.print("Ingrese el RUT del asistente que desea cambiar: ");
           String rutAsistente = scanner.nextLine();
 
-          Persona tempPersona = null;
-
-          // Busca al asistente con el RUT proporcionado.
-          for (Persona persona : presentacionEncontrada.getLista()) {
-            if (persona.compararCon(rutAsistente)) {
-                tempPersona = persona;
-                break;
-            }
-          }
+          Persona tempPersona = presentacionEncontrada.buscarParticipantePorEspecificacion(rutAsistente);
 
           // Verifica si se encontró al asistente.
           if (tempPersona == null) {
@@ -283,20 +272,19 @@ public class Functions {
           }
 
           System.out.print("Ingrese el nuevo nombre del asistente: ");
-          String nuevoNombre = scanner.nextLine();
+          String nuevoNombreB = scanner.nextLine();
 
           System.out.print("Ingrese el nuevo RUT del asistente: ");
-          String nuevoRut = scanner.nextLine();
+          String nuevoRutB = scanner.nextLine();
 
           // Verifica si ya existe un asistente con el nuevo nombre y RUT.
-          for (Persona persona : presentacionEncontrada.getLista()) {
-            if (persona.compararCon(nuevoNombre, nuevoRut)) {
-                System.out.println("Ya existe un asistente con el nombre y RUT proporcionados.");
-                return;
-            }
+
+          if (presentacionEncontrada.buscarParticipantePorEspecificacion(nuevoRutB, nuevoNombreB) != null) {
+            System.out.println("Ya existe un asistente con el nombre y RUT proporcionados.");
+            break;
           }
 
-          presentacionEncontrada.modificarParticipante(tempPersona, nuevoNombre, nuevoRut); // Modifica los datos del asistente.
+          presentacionEncontrada.modificarParticipante(tempPersona, nuevoNombreB, nuevoRutB); // Modifica los datos del asistente.
 
           System.out.println("\n\nAsistente actualizado con éxito.");
           System.out.println("Presione enter para continuar...");
@@ -309,17 +297,10 @@ public class Functions {
             System.out.print("Ingrese el RUT del asistente que desea sacar: ");
             String rutSacar = scanner.nextLine();
 
-            Persona asistenteASacar = null;
-
-            // Busca al asistente con el RUT proporcionado.
-            for (Persona persona : presentacionEncontrada.getLista()) {
-              if (persona.compararCon(rutSacar)) {
-                asistenteASacar = persona;
-                break;
-              }
-            }
+            Persona asistenteASacar = presentacionEncontrada.buscarParticipantePorEspecificacion(rutSacar);
 
             // Verifica si se encontró al asistente.
+
             if (asistenteASacar == null) {
               System.out.println("No se encontró ningún asistente con el RUT " + rutSacar + ".");
               System.out.println("Presione enter para continuar...");

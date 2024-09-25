@@ -35,10 +35,6 @@ public class Presentacion {
         return sala;
     }
 
-    public ArrayList<Persona> getLista() {
-        return listaParticipante;
-    }
-
     // Métodos setter para modificar los atributos de la presentación.
     public void setTitulo(String titulo) {
         this.titulo = titulo;
@@ -56,10 +52,6 @@ public class Presentacion {
         this.sala = sala;
     }
 
-    public void setLista(ArrayList<Persona> listaParticipante) {
-        this.listaParticipante = listaParticipante;
-    }
-
     // Método para agregar un participante a la lista sin especificar si es expositor.
     public void agregarParticipante(String nombre, String rut) {
         Persona tempPersona = new Persona(nombre, rut);
@@ -73,9 +65,18 @@ public class Presentacion {
     }
 
     // Método para buscar un participante por su RUT, solo si no es expositor.
-    public Persona buscarParticipantePorRut(String rut) {
+    public Persona buscarParticipantePorEspecificacion(String rut) {
         for (Persona persona : listaParticipante) {
             if (persona.getRut().equalsIgnoreCase(rut) && !persona.isEsExpositor()) {
+                return persona;
+            }
+        }
+        return null;
+    }
+
+    public Persona buscarParticipantePorEspecificacion(String rut, String nombre) {
+        for (Persona persona : listaParticipante) {
+            if (persona.getRut().equalsIgnoreCase(rut) && persona.getNombre().equalsIgnoreCase(nombre) && !persona.isEsExpositor()) {
                 return persona;
             }
         }

@@ -25,10 +25,10 @@ public class Functions {
     System.out.print("Ingrese el título de la presentación: ");
     String titulo = scanner.nextLine();
 
-    System.out.print("Ingrese la hora de inicio: ");
+    System.out.print("Ingrese la hora de inicio en formato 24hrs (Ej: 13:00, 04:00, etc): ");
     String horaInicio = scanner.nextLine();
 
-    System.out.print("Ingrese la hora de fin: ");
+    System.out.print("Ingrese la hora de fin en formato 24hrs (Ej: 13:00, 04:00, etc): ");
     String horaFin = scanner.nextLine();
 
     System.out.print("Ingrese la sala: ");
@@ -50,6 +50,22 @@ public class Functions {
 
     // Solicita los detalles de cada participante.
     for (int i = 0; i < numParticipants; i++) {
+
+      if (i == 0) {
+
+        System.out.print("Ingrese el nombre del expositor: ");
+        String newExpositor = scanner.nextLine();
+
+        System.out.print("Ingrese el rut del expositor: ");
+        String rutExpositor = scanner.nextLine();
+
+        String duracionExposicion = nuevaPresentacion.calcularDuracion(horaInicio, horaFin);
+
+        nuevaPresentacion.agregarExpositor(newExpositor, rutExpositor, duracionExposicion, rutExpositor);
+        System.out.println();
+
+      }
+
       System.out.print("Ingrese el nombre del asistente: ");
       String newName = scanner.nextLine();
 
@@ -60,6 +76,7 @@ public class Functions {
       boolean esExpositor = Boolean.parseBoolean(scanner.nextLine());
 
       nuevaPresentacion.agregarParticipante(newName, newRut, esExpositor);  // Agrega el participante a la presentación.
+      System.out.println();
     }
 
     presentaciones.get(dia).add(nuevaPresentacion); // Añade la nueva presentación a la lista del día seleccionado.

@@ -52,6 +52,11 @@ public class Presentacion {
         this.sala = sala;
     }
 
+    public void agregarExpositor(String nombre, String rut, String duracionExposicion, String temaExposicion) {
+        Persona tempPersona = new Expositor(nombre, rut, duracionExposicion, temaExposicion);
+        listaParticipante.add(tempPersona);
+    }
+
     // Método para agregar un participante a la lista sin especificar si es expositor.
     public void agregarParticipante(String nombre, String rut) {
         Persona tempPersona = new Persona(nombre, rut);
@@ -97,6 +102,31 @@ public class Presentacion {
     // Método para eliminar un participante de la lista.
     public void eliminarParticipante(Persona nuevaPersona) {
         listaParticipante.remove(nuevaPersona);
+    }
+
+    public String calcularDuracion(String horaInicio, String horaFin) {
+        
+        String[] inicio = horaInicio.split(":");
+        String[] fin = horaFin.split(":");
+
+        int inicialHora = Integer.parseInt(inicio[0]);
+        int inicialMinuto = Integer.parseInt(inicio[1]);
+
+        int finHora = Integer.parseInt(fin[0]);
+        int finMinuto = Integer.parseInt(fin[1]);
+
+        int minutosInicio = (inicialHora * 60) + inicialMinuto;
+        int minutosFinal = (finHora * 60) + finMinuto;
+
+        if (minutosFinal < minutosInicio) {
+            minutosFinal += 24 * 60;
+        }
+
+        int duracionMinutos = minutosFinal - minutosInicio;
+        int duracionHoras = duracionMinutos / 60;
+        int duracionRestanteMinutos = duracionMinutos % 60;
+
+        return String.format("%02d:%02d", duracionHoras, duracionRestanteMinutos);
     }
 
     // Método para mostrar la lista de participantes de la presentación.

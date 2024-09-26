@@ -26,10 +26,10 @@ public class Asistente extends Persona{
     }
 
     public void mostrarInformacion() {
-        System.out.println("Nombre: " + getNombre() + "\n");
-        System.out.println("Rut: " + getRut() + "\n");
-        System.out.println("Rol: Asistente\n");
-        System.out.println("Presentaciones atendidas: " + getPresentaciones() + "\n");
-        System.out.println("Tiempo total de las presentaciones atendidas: " + getTiempoTotal() + "\n");
+        System.out.println("Nombre: " + getNombre());
+        System.out.println("Rut: " + getRut());
+        System.out.println("Rol: Asistente");
+        System.out.println("Presentaciones atendidas: " + getPresentaciones());
+        System.out.println("Tiempo total de las presentaciones atendidas: " + getTiempoTotal());
     }
 }

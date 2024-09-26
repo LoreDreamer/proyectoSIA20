@@ -3,6 +3,7 @@ import java.util.*;
 public class Functions {
 
   private final static Scanner scanner = new Scanner(System.in); // Escáner para la entrada del usuario.
+  private static Map<String, Asistente> mapaAsistentes = new HashMap<>();
 
   // Método para agregar una nueva presentación.
   public static void agregarPresentacion(Map<String, List<Presentacion>> presentaciones) {
@@ -61,26 +62,36 @@ public class Functions {
 
         String duracionExposicion = nuevaPresentacion.calcularDuracion(horaInicio, horaFin);
 
-        nuevaPresentacion.agregarExpositor(newExpositor, rutExpositor, duracionExposicion, rutExpositor);
+        nuevaPresentacion.agregarPersona(newExpositor, rutExpositor, duracionExposicion, rutExpositor);
         System.out.println();
 
+      } else {
+
+        System.out.print("Ingrese el nombre del asistente: ");
+        String newName = scanner.nextLine();
+
+        System.out.print("Ingrese el rut del asistente: ");
+        String newRut = scanner.nextLine();
+
+        int duracion = nuevaPresentacion.calcularDuracionMinutos(horaInicio, horaFin);
+        
+        Asistente tempA = mapaAsistentes.get(newRut);
+
+        if (tempA != null) {
+          tempA.setPresentaciones(tempA.getPresentaciones() + 1);
+          tempA.setTiempoTotal(tempA.getTiempoTotal() + duracion);
+          nuevaPresentacion.agregarPersona(newName, newRut, tempA.getPresentaciones() + 1, tempA.getTiempoTotal() + duracion);  // Agrega el participante a la presentación.
+        } else {
+          mapaAsistentes.put(newRut, new Asistente(newName, newRut, 1, duracion));
+          nuevaPresentacion.agregarPersona(newName, newRut, 1, duracion);  // Agrega el participante a la presentación.
+        }
+        System.out.println();
       }
-
-      System.out.print("Ingrese el nombre del asistente: ");
-      String newName = scanner.nextLine();
-
-      System.out.print("Ingrese el rut del asistente: ");
-      String newRut = scanner.nextLine();
-
-      System.out.print("Ingrese si es expositor (true/false): ");
-      boolean esExpositor = Boolean.parseBoolean(scanner.nextLine());
-
-      nuevaPresentacion.agregarParticipante(newName, newRut, esExpositor);  // Agrega el participante a la presentación.
-      System.out.println();
     }
 
+    nuevaPresentacion.actualizarAsistentes(mapaAsistentes);
     presentaciones.get(dia).add(nuevaPresentacion); // Añade la nueva presentación a la lista del día seleccionado.
-
+    
     System.out.println("\nPresentación agregada con éxito para el día " + dia + "." + "\n");
   }
 
@@ -109,7 +120,9 @@ public class Functions {
     if (listaPresentaciones.isEmpty()) {
       System.out.println("No hay presentaciones registradas para el día " + dia + ".");
     } else {
+
       for (Presentacion presentacion : listaPresentaciones) {
+        presentacion.actualizarAsistentes(mapaAsistentes);
         presentacion.mostrarInformacion();
         System.out.println();
       }
@@ -186,7 +199,6 @@ public class Functions {
     nuevaPresentacion.setHoraFin(nuevaHoraFin);
 
     presentaciones.get(nuevoDia).add(nuevaPresentacion);
-
     System.out.println("\nPresentación cambiada con éxito.");
 
   }
@@ -267,7 +279,7 @@ public class Functions {
             return;
           }
           
-          presentacionEncontrada.agregarParticipante(nuevoNombreA, nuevoRutA); // Agrega el nuevo asistente a la presentación.
+          presentacionEncontrada.agregarPersona(nuevoNombreA, nuevoRutA, opcion, opcion); // Agrega el nuevo asistente a la presentación.
 
           System.out.println("\nAsistente añadido con éxito.");
           System.out.println("Presione enter para continuar...");
@@ -363,14 +375,19 @@ public class Functions {
   // Método para inicializar algunos datos de prueba.
   public static void inicializarDatos(Map<String, List<Presentacion>> presentaciones) {
 
-    Persona expositor1 = new Persona("Carlos Pérez", "12345678-9", true);
-    Persona asistente1 = new Persona("Ana González", "11765432-1", false);
-    Persona expositor2 = new Persona("María Rodríguez", "21456789-0", true);
+    Persona expositor1 = new Expositor("Carlos Perez", "12345678-9", "1:00", "Introduccion a la IA");
+    Persona asistente1 = new Asistente("Ana Gonzalez", "11111111-1", 1, 60);
+    Persona expositor2 = new Expositor("Maria Rodriguez", "21456789-0", "1:00", "Avances en Machine Learning");
+    Persona asistente2 = new Asistente("Eloisa Cortes", "11715432-1", 1, 60);
 
-    Presentacion presentacion1 = new Presentacion("Introducción a la IA", "10:00", "11:00", "IBC 2-12", new ArrayList<>(Arrays.asList(expositor1, asistente1)));
-    Presentacion presentacion2 = new Presentacion("Avances en Machine Learning", "12:00", "13:00", "IBC 2-4", new ArrayList<>(Arrays.asList(expositor2)));
+    Presentacion presentacion1 = new Presentacion("Introduccion a la IA", "10:00", "11:00", "IBC 2-12", new ArrayList<>(Arrays.asList(expositor1, asistente1)));
+    Presentacion presentacion2 = new Presentacion("Avances en Machine Learning", "12:00", "13:00", "IBC 2-4", new ArrayList<>(Arrays.asList(expositor2, asistente2)));
 
     presentaciones.get("lun").add(presentacion1);
     presentaciones.get("mar").add(presentacion2);
+
+    mapaAsistentes.put(asistente1.getRut(), (Asistente) asistente1);
+    mapaAsistentes.put(asistente2.getRut(), (Asistente) asistente2);
+    
   }
 }

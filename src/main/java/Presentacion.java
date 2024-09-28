@@ -66,10 +66,9 @@
             listaParticipante.add(asistente);
         }
 
-        // Método para buscar un participante por su RUT, solo si no es expositor.
         public Persona buscarParticipantePorEspecificacion(String rut) {
             for (Persona persona : listaParticipante) {
-                if (persona.getRut().equalsIgnoreCase(rut) && !persona.isEsExpositor()) {
+                if (persona.getRut().equalsIgnoreCase(rut) && (persona instanceof Asistente)) {
                     return persona;
                 }
             }
@@ -78,7 +77,7 @@
 
         public Persona buscarParticipantePorEspecificacion(String rut, String nombre) {
             for (Persona persona : listaParticipante) {
-                if (persona.getRut().equalsIgnoreCase(rut) && persona.getNombre().equalsIgnoreCase(nombre) && !persona.isEsExpositor()) {
+                if (persona.getRut().equalsIgnoreCase(rut) && persona.getNombre().equalsIgnoreCase(nombre) && (persona instanceof Asistente)) {
                     return persona;
                 }
             }

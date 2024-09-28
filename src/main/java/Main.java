@@ -17,6 +17,7 @@ public class Main {
     presentaciones.put("sab", new ArrayList<Presentacion>());
 
     Functions.inicializarDatos(presentaciones); // Llama a la función para inicializar datos en el mapa de presentaciones.
+    Functions.limpiarPantalla();
     
     // Bucle principal del menú.
     while (true) {

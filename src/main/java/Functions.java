@@ -78,12 +78,16 @@ public class Functions {
         Asistente tempA = mapaAsistentes.get(newRut);
 
         if (tempA != null) {
+
           tempA.setPresentaciones(tempA.getPresentaciones() + 1);
           tempA.setTiempoTotal(tempA.getTiempoTotal() + duracion);
           nuevaPresentacion.agregarPersona(newName, newRut, tempA.getPresentaciones() + 1, tempA.getTiempoTotal() + duracion);  // Agrega el participante a la presentación.
+
         } else {
+
           mapaAsistentes.put(newRut, new Asistente(newName, newRut, 1, duracion));
           nuevaPresentacion.agregarPersona(newName, newRut, 1, duracion);  // Agrega el participante a la presentación.
+
         }
         System.out.println();
       }
@@ -247,6 +251,8 @@ public class Functions {
       return;
     }
 
+    int duracion = presentacionEncontrada.calcularDuracionMinutos(presentacionEncontrada.getHoraInicio(), presentacionEncontrada.getHoraFin());
+
     limpiarPantalla();  // Limpia la pantalla antes de mostrar el menú de gestión de asistentes.
 
     // Menú para gestionar asistentes.
@@ -278,8 +284,21 @@ public class Functions {
             System.out.println("Ya existe un asistente con el nombre y RUT proporcionados.");
             return;
           }
-          
-          presentacionEncontrada.agregarPersona(nuevoNombreA, nuevoRutA, opcion, opcion); // Agrega el nuevo asistente a la presentación.
+
+          Asistente temp = mapaAsistentes.get(nuevoRutA);
+
+          if (temp != null) {
+
+            temp.setPresentaciones(temp.getPresentaciones() + 1);
+            temp.setTiempoTotal(temp.getTiempoTotal() + duracion);
+            presentacionEncontrada.agregarPersona(temp);
+
+          } else {
+
+            mapaAsistentes.put(nuevoRutA, new Asistente(nuevoNombreA, nuevoRutA, 1, duracion));
+            presentacionEncontrada.agregarPersona(nuevoNombreA, nuevoRutA, 1, duracion);
+
+          }
 
           System.out.println("\nAsistente añadido con éxito.");
           System.out.println("Presione enter para continuar...");
@@ -292,7 +311,7 @@ public class Functions {
           System.out.print("Ingrese el RUT del asistente que desea cambiar: ");
           String rutAsistente = scanner.nextLine();
 
-          Persona tempPersona = presentacionEncontrada.buscarParticipantePorEspecificacion(rutAsistente);
+          Asistente tempPersona = (Asistente) presentacionEncontrada.buscarParticipantePorEspecificacion(rutAsistente);
 
           // Verifica si se encontró al asistente.
           if (tempPersona == null) {
@@ -313,7 +332,28 @@ public class Functions {
             break;
           }
 
-          presentacionEncontrada.modificarParticipante(tempPersona, nuevoNombreB, nuevoRutB); // Modifica los datos del asistente.
+          Asistente tempAsistenteA = mapaAsistentes.get(rutAsistente);
+          Asistente tempAsistenteB = mapaAsistentes.get(nuevoRutB);
+     
+          if (!tempAsistenteA.compararCon(nuevoRutB, nuevoNombreB) && tempAsistenteA != null && tempAsistenteB != null) {
+
+            tempAsistenteA.setPresentaciones(tempAsistenteA.getPresentaciones() - 1);
+            tempAsistenteA.setTiempoTotal(tempAsistenteA.getTiempoTotal() - duracion);
+            
+            tempAsistenteB.setPresentaciones(tempAsistenteB.getPresentaciones() +  1);
+            tempAsistenteB.setTiempoTotal(tempAsistenteB.getTiempoTotal() + duracion);
+
+            presentacionEncontrada.modificarParticipante(tempPersona, nuevoNombreB, nuevoRutB);
+
+          } else if (!tempAsistenteA.compararCon(nuevoRutB, nuevoNombreB) && tempAsistenteA != null && tempAsistenteB == null) {
+
+            tempAsistenteA.setPresentaciones(tempAsistenteA.getPresentaciones() - 1);
+            tempAsistenteA.setTiempoTotal(tempAsistenteA.getTiempoTotal() - duracion);
+            
+            mapaAsistentes.put(nuevoRutB, new Asistente(nuevoNombreB, nuevoRutB, 1, duracion));
+
+            presentacionEncontrada.modificarParticipante(tempPersona, nuevoNombreB, nuevoRutB);
+          }
 
           System.out.println("\n\nAsistente actualizado con éxito.");
           System.out.println("Presione enter para continuar...");
@@ -338,6 +378,11 @@ public class Functions {
               break;
             }
 
+            Asistente asistenteMapa = mapaAsistentes.get(rutSacar);
+
+            asistenteMapa.setPresentaciones(asistenteMapa.getPresentaciones() - 1);
+            asistenteMapa.setTiempoTotal(asistenteMapa.getTiempoTotal() - duracion);
+
             // Elimina al asistente de la lista.
             presentacionEncontrada.eliminarParticipante(asistenteASacar);
             System.out.println("\nAsistente sacado con éxito.");
@@ -354,8 +399,7 @@ public class Functions {
         }
         limpiarPantalla();
     }
-}
-
+  }
 
   // -------------------- Métodos auxiliares -------------------- //
   
@@ -378,7 +422,7 @@ public class Functions {
     Persona expositor1 = new Expositor("Carlos Perez", "12345678-9", "1:00", "Introduccion a la IA");
     Persona asistente1 = new Asistente("Ana Gonzalez", "11111111-1", 1, 60);
     Persona expositor2 = new Expositor("Maria Rodriguez", "21456789-0", "1:00", "Avances en Machine Learning");
-    Persona asistente2 = new Asistente("Eloisa Cortes", "11715432-1", 1, 60);
+    Persona asistente2 = new Asistente("Eloisa Cortes", "11111111-2", 1, 60);
 
     Presentacion presentacion1 = new Presentacion("Introduccion a la IA", "10:00", "11:00", "IBC 2-12", new ArrayList<>(Arrays.asList(expositor1, asistente1)));
     Presentacion presentacion2 = new Presentacion("Avances en Machine Learning", "12:00", "13:00", "IBC 2-4", new ArrayList<>(Arrays.asList(expositor2, asistente2)));

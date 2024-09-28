@@ -57,19 +57,12 @@
             listaParticipante.add(tempPersona);
         }
 
-        // Método para agregar un participante a la lista sin especificar si es expositor.
         public void agregarPersona(String nombre, String rut, int presentacionesAtendidas, int tiempoTotalPresentaciones) {
             Persona tempPersona = new Asistente(nombre, rut, presentacionesAtendidas, tiempoTotalPresentaciones);
             listaParticipante.add(tempPersona);
         }
 
-        // Método para agregar un participante a la lista especificando si es expositor.
-        public void agregarParticipante(String nombre, String rut, boolean esExpositor) {
-            Persona tempPersona = new Persona(nombre, rut, esExpositor);
-            listaParticipante.add(tempPersona);
-        }
-
-        public void agregarParticipante(Asistente asistente) {
+        public void agregarPersona(Asistente asistente) {
             listaParticipante.add(asistente);
         }
 
@@ -93,15 +86,11 @@
         }
 
         // Método para modificar el nombre y RUT de un participante existente.
-        public void modificarParticipante(Persona participante, String nuevoNombre, String nuevoRut) {
+        public void modificarParticipante(Asistente participante, String nuevoNombre, String nuevoRut) {
             participante.setNombre(nuevoNombre);
             participante.setRut(nuevoRut);
         }
 
-        // Método para modificar el estado de expositor de un participante existente.
-        public void modificarParticipante(Persona participante, boolean esExpositor) {
-            participante.setEsExpositor(esExpositor);
-        }
         
         // Método para eliminar un participante de la lista.
         public void eliminarParticipante(Persona nuevaPersona) {

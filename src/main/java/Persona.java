@@ -36,6 +36,16 @@ public class Persona {
     public boolean compararCon(String nombre, String rut) {
         return this.nombre.equalsIgnoreCase(nombre) && this.rut.equals(rut);
     }
+
+    public void verificarRut(String rut) throws rutInvalidoException {
+        int length = rut.length();
+
+        if (length > 10 || length < 10) {
+            throw new rutInvalidoException();
+        }
+
+        return;
+    }
     
      // Método para mostrar la información de la persona.
     public void mostrarInformacion() {

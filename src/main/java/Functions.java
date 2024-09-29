@@ -61,6 +61,21 @@ public class Functions {
         System.out.print("Ingrese el rut del expositor: ");
         String rutExpositor = scanner.nextLine();
 
+        Persona expositorRevision = new Persona(newExpositor, rutExpositor);
+        
+        try {
+          expositorRevision.verificarRut(rutExpositor);
+        }
+        catch (Exception e) {
+          System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
+          System.out.println("Presione Enter para continuar...");
+
+          presioneTecla();
+          limpiarPantalla();
+          agregarPresentacion(congresoInternacional);
+          return;
+        }
+
         String duracionExposicion = nuevaPresentacion.calcularDuracion(horaInicio, horaFin);
 
         nuevaPresentacion.agregarPersona(newExpositor, rutExpositor, duracionExposicion, rutExpositor);
@@ -75,6 +90,20 @@ public class Functions {
         String newRut = scanner.nextLine();
 
         int duracion = nuevaPresentacion.calcularDuracionMinutos(horaInicio, horaFin);
+        Persona asistenteRevision = new Persona(newName, newRut);
+
+        try {
+          asistenteRevision.verificarRut(newRut);
+        }
+        catch (Exception e) {
+          System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
+          System.out.println("Presione Enter para continuar...");
+
+          presioneTecla();
+          limpiarPantalla();
+          agregarPresentacion(congresoInternacional);
+          return;
+        }
         
         Asistente tempA = congresoInternacional.searchAsistente(newRut);
 
@@ -237,6 +266,20 @@ public class Functions {
           System.out.print("Ingrese el RUT del nuevo asistente: ");
           String nuevoRutA = scanner.nextLine();
 
+          Persona asistenteRevision = new Persona(nuevoNombreA, nuevoRutA);
+
+          try {
+            asistenteRevision.verificarRut(nuevoRutA);
+          }
+          catch (Exception e) {
+            System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
+            System.out.println("Presione Enter para continuar...");
+  
+            presioneTecla();
+            limpiarPantalla();
+            break;
+          }
+
           if (presentacionEncontrada.buscarParticipantePorEspecificacion(nuevoRutA, nuevoNombreA) != null) {
             System.out.println("Ya existe un asistente con el nombre y RUT proporcionados.");
             return;
@@ -266,12 +309,23 @@ public class Functions {
                 
           System.out.print("Ingrese el RUT del asistente que desea cambiar: ");
           String rutAsistente = scanner.nextLine();
-
           Asistente tempPersona = (Asistente) presentacionEncontrada.buscarParticipantePorEspecificacion(rutAsistente);
-
+          
           // Verifica si se encontró al asistente.
           if (tempPersona == null) {
             System.out.println("No se encontró ningún asistente con el RUT " + rutAsistente + ".");
+            break;
+          }
+
+          try {
+            tempPersona.verificarRut(rutAsistente);
+          }
+          catch (Exception e) {
+            System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
+            System.out.println("Presione Enter para continuar...");
+  
+            presioneTecla();
+            limpiarPantalla();
             break;
           }
 
@@ -316,16 +370,25 @@ public class Functions {
                 
             System.out.print("Ingrese el RUT del asistente que desea sacar: ");
             String rutSacar = scanner.nextLine();
-
             Persona asistenteASacar = presentacionEncontrada.buscarParticipantePorEspecificacion(rutSacar);
-
-            // Verifica si se encontró al asistente.
 
             if (asistenteASacar == null) {
               System.out.println("No se encontró ningún asistente con el RUT " + rutSacar + ".");
               System.out.println("Presione enter para continuar...");
               presioneTecla();
               
+              break;
+            }
+
+            try {
+              asistenteASacar.verificarRut(rutSacar);
+            }
+            catch (Exception e) {
+              System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
+              System.out.println("Presione Enter para continuar...");
+    
+              presioneTecla();
+              limpiarPantalla();
               break;
             }
 

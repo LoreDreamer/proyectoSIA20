@@ -53,7 +53,7 @@ public class Main {
         case 3:  
           // Limpia la pantalla, recalendariza una presentación y espera que el usuario presione una tecla para continuar.
           Functions.limpiarPantalla();
-          //Functions.recalendarizarPresentacion(congresoInternacional);
+          Functions.recalendarizarPresentacion(congresoInternacional);
           System.out.println("Presione enter para continuar...");
           Functions.presioneTecla();
           Functions.limpiarPantalla();
@@ -62,7 +62,7 @@ public class Main {
         case 4:
           // Limpia la pantalla, cambia el asistente de una presentación y espera que el usuario presione una tecla para continuar.
           Functions.limpiarPantalla();
-          //Functions.cambiarAsistente(congresoInternacional);
+          Functions.cambiarAsistente(congresoInternacional);
 
 
           System.out.println("Presione enter para continuar...");

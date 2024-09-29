@@ -2,22 +2,14 @@ import java.util.*;
 
 public class Main {
 
-  // Mapa para almacenar las presentaciones. Clave: Dias de la semana ; Valor: Listas de presentaciones.
-  private final static Map<String, List<Presentacion>> presentaciones = new HashMap<String, List<Presentacion>>();
   private final static Scanner scanner = new Scanner(System.in); // Escáner para la entrada del usuario.
 
   public static void main(String[] args) {
     
-    // Inicializa el mapa con dias de la semana y listas vacías de presentaciones.
-    presentaciones.put("lun", new ArrayList<Presentacion>());
-    presentaciones.put("mar", new ArrayList<Presentacion>());
-    presentaciones.put("mie", new ArrayList<Presentacion>());
-    presentaciones.put("jue", new ArrayList<Presentacion>());
-    presentaciones.put("vie", new ArrayList<Presentacion>());
-    presentaciones.put("sab", new ArrayList<Presentacion>());
+    Congreso congresoInternacional = new Congreso();
 
-    Functions.inicializarDatos(presentaciones); // Llama a la función para inicializar datos en el mapa de presentaciones.
-    Functions.limpiarPantalla();
+    congresoInternacional.inicializarPresentaciones();
+    congresoInternacional.inicializarDatosPresentaciones();
     
     // Bucle principal del menú.
     while (true) {
@@ -43,7 +35,7 @@ public class Main {
         case 1:
           // Limpia la pantalla, agrega una nueva presentación, y espera que el usuario presione una tecla para continuar.
           Functions.limpiarPantalla();
-          Functions.agregarPresentacion(presentaciones);
+          Functions.agregarPresentacion(congresoInternacional);
           System.out.println("Presione enter para continuar...");
           Functions.presioneTecla();
           Functions.limpiarPantalla();
@@ -52,7 +44,7 @@ public class Main {
         case 2:
           // Limpia la pantalla, muestra la información de las presentaciones y espera que el usuario presione una tecla para continuar.
           Functions.limpiarPantalla();
-          Functions.mostrarPresentacion(presentaciones);
+          Functions.mostrarPresentacion(congresoInternacional);
           System.out.println("Presione enter para continuar...");
           Functions.presioneTecla();
           Functions.limpiarPantalla();
@@ -61,7 +53,7 @@ public class Main {
         case 3:  
           // Limpia la pantalla, recalendariza una presentación y espera que el usuario presione una tecla para continuar.
           Functions.limpiarPantalla();
-          Functions.recalendarizarPresentacion(presentaciones);
+          //Functions.recalendarizarPresentacion(congresoInternacional);
           System.out.println("Presione enter para continuar...");
           Functions.presioneTecla();
           Functions.limpiarPantalla();
@@ -70,7 +62,7 @@ public class Main {
         case 4:
           // Limpia la pantalla, cambia el asistente de una presentación y espera que el usuario presione una tecla para continuar.
           Functions.limpiarPantalla();
-          Functions.cambiarAsistente(presentaciones);
+          //Functions.cambiarAsistente(congresoInternacional);
 
 
           System.out.println("Presione enter para continuar...");

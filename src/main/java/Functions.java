@@ -3,10 +3,9 @@ import java.util.*;
 public class Functions {
 
   private final static Scanner scanner = new Scanner(System.in); // Escáner para la entrada del usuario.
-  private static Map<String, Asistente> mapaAsistentes = new HashMap<>();
 
   // Método para agregar una nueva presentación.
-  public static void agregarPresentacion(Map<String, List<Presentacion>> presentaciones) {
+  public static void agregarPresentacion(Congreso congresoInternacional) {
     
     System.out.println("======================================");
     System.out.println("          Agregar Presentación        ");
@@ -17,8 +16,9 @@ public class Functions {
     String dia = scanner.nextLine().toLowerCase();
 
     // Verifica que el día ingresado sea válido.
-    if (!presentaciones.containsKey(dia)) {
-      System.out.println("\n" + "Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab)." + "\n\n");
+    boolean flag = Congreso.verficacionDia(dia);
+
+    if (!flag) {
       return;
     }
     
@@ -46,8 +46,9 @@ public class Functions {
     System.out.println("         Agregar Participantes        ");
     System.out.println("======================================\n");
 
-    // Crea una nueva presentación con los detalles proporcionados.
+    // Crea una nueva presentación con los detalles proporcionados
     Presentacion nuevaPresentacion = new Presentacion(titulo, horaInicio, horaFin, sala, participantes);
+    
 
     // Solicita los detalles de cada participante.
     for (int i = 0; i < numParticipants; i++) {
@@ -75,32 +76,31 @@ public class Functions {
 
         int duracion = nuevaPresentacion.calcularDuracionMinutos(horaInicio, horaFin);
         
-        Asistente tempA = mapaAsistentes.get(newRut);
+        Asistente tempA = congresoInternacional.searchAsistente(newRut);
 
         if (tempA != null) {
 
-          tempA.setPresentaciones(tempA.getPresentaciones() + 1);
-          tempA.setTiempoTotal(tempA.getTiempoTotal() + duracion);
+          congresoInternacional.addingAsistenteToPresentacion(newRut, duracion);
           nuevaPresentacion.agregarPersona(newName, newRut, tempA.getPresentaciones() + 1, tempA.getTiempoTotal() + duracion);  // Agrega el participante a la presentación.
 
         } else {
 
-          mapaAsistentes.put(newRut, new Asistente(newName, newRut, 1, duracion));
+          congresoInternacional.addingAsistenteToPresentacion(newRut, newName, duracion);
           nuevaPresentacion.agregarPersona(newName, newRut, 1, duracion);  // Agrega el participante a la presentación.
 
         }
-        System.out.println();
+        System.out.println(); 
       }
     }
 
-    nuevaPresentacion.actualizarAsistentes(mapaAsistentes);
-    presentaciones.get(dia).add(nuevaPresentacion); // Añade la nueva presentación a la lista del día seleccionado.
+    congresoInternacional.actualizarAsistentes(nuevaPresentacion);
+    congresoInternacional.anadirPresentacion(nuevaPresentacion, dia); // Añade la nueva presentación a la lista del día seleccionado.
     
     System.out.println("\nPresentación agregada con éxito para el día " + dia + "." + "\n");
   }
-
+  
   // Método para mostrar las presentaciones de un día específico.
-  public static void mostrarPresentacion(Map<String, List<Presentacion>> presentaciones) {
+  public static void mostrarPresentacion(Congreso congresoInternacional) {
 
     System.out.println("======================================");
     System.out.println("         Mostrar Presentaciones       ");
@@ -111,30 +111,18 @@ public class Functions {
     String dia = scanner.nextLine().toLowerCase();
 
     // Verifica que el día ingresado sea válido.
-    if (!presentaciones.containsKey(dia)) {
-      System.out.println("Día inválido. Por favor, ingrese un día válido(lun, mar, mie, jue, vie, sab).");
+    boolean flag = Congreso.verficacionDia(dia);
+
+    if (!flag) {
       return;
     }
 
-    List<Presentacion> listaPresentaciones = presentaciones.get(dia);
-    
-    limpiarPantalla(); // Limpia la pantalla antes de mostrar la información.
-    
-    // Muestra las presentaciones si hay alguna registrada para el día.
-    if (listaPresentaciones.isEmpty()) {
-      System.out.println("No hay presentaciones registradas para el día " + dia + ".");
-    } else {
+    congresoInternacional.mostrarPresentacionesPorDia(dia);
 
-      for (Presentacion presentacion : listaPresentaciones) {
-        presentacion.actualizarAsistentes(mapaAsistentes);
-        presentacion.mostrarInformacion();
-        System.out.println();
-      }
-    }
   }
-
+   
   // Método para recalendarizar una presentación.
-  public static void recalendarizarPresentacion(Map<String, List<Presentacion>> presentaciones) {
+  public static void recalendarizarPresentacion(Congreso congresoInternacional) {
     
     System.out.println("======================================");
     System.out.println("       Recalendarizar Presentación    ");
@@ -145,53 +133,37 @@ public class Functions {
     String dia = scanner.nextLine().toLowerCase();
 
     // Verifica que el día ingresado sea válido.
-    if (!presentaciones.containsKey(dia)) {
-      System.out.println("Día inválido. Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab).\n");
-      return;
-    }
+    boolean flaga = Congreso.verficacionDia(dia);
 
-    List<Presentacion> listaPresentaciones = presentaciones.get(dia);
-
-    // Verifica si hay presentaciones registradas para el día.
-    if (listaPresentaciones.isEmpty()){
-      System.out.println("No hay presentaciones registradas para el día " + dia + ".\n");
+    if (!flaga) {
       return;
     }
 
     System.out.print("Ingrese el título de la presentación: "); // Solicita el título de la presentación que se desea recalendarizar.
     String titulo = scanner.nextLine();
 
-    Presentacion nuevaPresentacion = null;
+    Presentacion nuevaPresentacion = congresoInternacional.encontrarPresentacion(dia, titulo);
 
-    // Busca la presentación con el título proporcionado.
-    for (Presentacion presentacion : listaPresentaciones) {
-      if (presentacion.getTitulo().equalsIgnoreCase(titulo)) {
-        nuevaPresentacion = presentacion;
-        break;
-      }
-    } 
-
-    // Verifica si se encontró la presentación.
-    if (nuevaPresentacion == null) {
-      System.out.println("No se encontró ninguna presentación con el título " + titulo + ".\n");
+    // Verifica si hay presentaciones registradas para el día.
+    if (nuevaPresentacion == null){
+      System.out.println("No se ha encontrado su presentación.");
       return;
     }
 
     System.out.println("\n");
     nuevaPresentacion.mostrarInformacion();
+    congresoInternacional.removerPresentacion(nuevaPresentacion, dia); // Elimina la presentación del día actual y agrega la presentación con la nueva información.
     
     // Solicita el nuevo día para la presentación.
     System.out.print("\nIngrese el nuevo día para la presentación (lun, mar, mie, jue, vie, sab): ");
     String nuevoDia = scanner.nextLine().toLowerCase();
 
-    // Verifica que el nuevo día sea válido.
-    if (!presentaciones.containsKey(nuevoDia)) {
-      System.out.println("Día inválido. Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab).\n");
+    // Verifica que el día ingresado sea válido.
+    boolean flagb = Congreso.verficacionDia(dia);
+
+    if (!flagb) {
       return;
     }
-
-    // Elimina la presentación del día actual y agrega la presentación con la nueva información.
-    presentaciones.get(dia).remove(nuevaPresentacion);
 
     System.out.print("Ingrese la nueva hora de inicio para la presentación: ");
     String nuevaHoraInicio = scanner.nextLine();
@@ -202,13 +174,14 @@ public class Functions {
     nuevaPresentacion.setHoraInicio(nuevaHoraInicio);
     nuevaPresentacion.setHoraFin(nuevaHoraFin);
 
-    presentaciones.get(nuevoDia).add(nuevaPresentacion);
+    congresoInternacional.anadirPresentacion(nuevaPresentacion, nuevoDia);
     System.out.println("\nPresentación cambiada con éxito.");
 
   }
+   
 
   // Método para gestionar los asistentes de una presentación.
-  public static void cambiarAsistente(Map<String, List<Presentacion>> presentaciones) {
+  public static void cambiarAsistente(Congreso congresoInternacional) {
 
     System.out.println("======================================");
     System.out.println("         Gestión de Asistentes        ");
@@ -219,35 +192,19 @@ public class Functions {
     String dia = scanner.nextLine().toLowerCase();
 
     // Verifica que el día ingresado sea válido.
-    if (!presentaciones.containsKey(dia)) {
-        System.out.println("Día inválido. Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab).");
-        return;
-    }
+    boolean flaga = Congreso.verficacionDia(dia);
 
-    List<Presentacion> listaPresentaciones = presentaciones.get(dia);
-
-     // Verifica si hay presentaciones registradas para el día.
-    if (listaPresentaciones.isEmpty()) {
-      System.out.println("No hay presentaciones registradas para el día " + dia + ".");
+    if (!flaga) {
       return;
     }
 
     System.out.print("Ingrese el título de la presentación: ");  // Solicita el título de la presentación que desea modificar.
     String titulo = scanner.nextLine();
 
-    Presentacion presentacionEncontrada = null;
+    Presentacion presentacionEncontrada = congresoInternacional.encontrarPresentacion(dia, titulo);
 
-    // Busca la presentación con el título proporcionado.
-    for (Presentacion presentacion : listaPresentaciones) {
-      if (presentacion.getTitulo().equalsIgnoreCase(titulo)) {
-        presentacionEncontrada = presentacion;
-        break;
-      }
-    }
-
-    // Verifica si se encontró la presentación.
-    if (presentacionEncontrada == null) {
-      System.out.println("No se encontró ninguna presentación con el título " + titulo + ".");
+    if (presentacionEncontrada == null) { // Verifica si se encontró la presentación.
+      System.out.println("No se ha encontrado su presentación.");
       return;
     }
 
@@ -285,18 +242,17 @@ public class Functions {
             return;
           }
 
-          Asistente temp = mapaAsistentes.get(nuevoRutA);
+          Asistente temp = congresoInternacional.searchAsistente(nuevoRutA);
 
           if (temp != null) {
 
-            temp.setPresentaciones(temp.getPresentaciones() + 1);
-            temp.setTiempoTotal(temp.getTiempoTotal() + duracion);
+            congresoInternacional.addingAsistenteToPresentacion(nuevoRutA, duracion);
             presentacionEncontrada.agregarPersona(temp);
 
           } else {
 
-            mapaAsistentes.put(nuevoRutA, new Asistente(nuevoNombreA, nuevoRutA, 1, duracion));
-            presentacionEncontrada.agregarPersona(nuevoNombreA, nuevoRutA, 1, duracion);
+            congresoInternacional.addingAsistenteToPresentacion(nuevoRutA, nuevoNombreA, duracion);
+            presentacionEncontrada.agregarPersona(nuevoNombreA, nuevoRutA, 1, duracion);  // Agrega el participante a la presentación.
 
           }
 
@@ -332,26 +288,21 @@ public class Functions {
             break;
           }
 
-          Asistente tempAsistenteA = mapaAsistentes.get(rutAsistente);
-          Asistente tempAsistenteB = mapaAsistentes.get(nuevoRutB);
+          Asistente tempAsistenteA = congresoInternacional.searchAsistente(rutAsistente);
+          Asistente tempAsistenteB = congresoInternacional.searchAsistente(nuevoRutB);
      
           if (!tempAsistenteA.compararCon(nuevoRutB, nuevoNombreB) && tempAsistenteA != null && tempAsistenteB != null) {
 
-            tempAsistenteA.setPresentaciones(tempAsistenteA.getPresentaciones() - 1);
-            tempAsistenteA.setTiempoTotal(tempAsistenteA.getTiempoTotal() - duracion);
-            
-            tempAsistenteB.setPresentaciones(tempAsistenteB.getPresentaciones() +  1);
-            tempAsistenteB.setTiempoTotal(tempAsistenteB.getTiempoTotal() + duracion);
+            congresoInternacional.removingAsistenteFromPresentacion(rutAsistente, duracion);
+            congresoInternacional.addingAsistenteToPresentacion(nuevoRutB, duracion);
 
             presentacionEncontrada.modificarParticipante(tempPersona, nuevoNombreB, nuevoRutB);
 
           } else if (!tempAsistenteA.compararCon(nuevoRutB, nuevoNombreB) && tempAsistenteA != null && tempAsistenteB == null) {
 
-            tempAsistenteA.setPresentaciones(tempAsistenteA.getPresentaciones() - 1);
-            tempAsistenteA.setTiempoTotal(tempAsistenteA.getTiempoTotal() - duracion);
+            congresoInternacional.removingAsistenteFromPresentacion(rutAsistente, duracion);
+            congresoInternacional.addingAsistenteToPresentacion(nuevoRutB, nuevoNombreB, duracion);
             
-            mapaAsistentes.put(nuevoRutB, new Asistente(nuevoNombreB, nuevoRutB, 1, duracion));
-
             presentacionEncontrada.modificarParticipante(tempPersona, nuevoNombreB, nuevoRutB);
           }
 
@@ -378,13 +329,9 @@ public class Functions {
               break;
             }
 
-            Asistente asistenteMapa = mapaAsistentes.get(rutSacar);
-
-            asistenteMapa.setPresentaciones(asistenteMapa.getPresentaciones() - 1);
-            asistenteMapa.setTiempoTotal(asistenteMapa.getTiempoTotal() - duracion);
-
-            // Elimina al asistente de la lista.
+            congresoInternacional.removingAsistenteFromPresentacion(rutSacar, duracion);
             presentacionEncontrada.eliminarParticipante(asistenteASacar);
+
             System.out.println("\nAsistente sacado con éxito.");
             System.out.println("Presione enter para continuar...");
             presioneTecla();
@@ -400,7 +347,7 @@ public class Functions {
         limpiarPantalla();
     }
   }
-
+  
   // -------------------- Métodos auxiliares -------------------- //
   
   // Método auxiliar para limpiar la pantalla.
@@ -414,24 +361,5 @@ public class Functions {
   public static void presioneTecla() {
     Scanner inputScanner = new Scanner(System.in);
     inputScanner.nextLine();
-  }
-
-  // Método para inicializar algunos datos de prueba.
-  public static void inicializarDatos(Map<String, List<Presentacion>> presentaciones) {
-
-    Persona expositor1 = new Expositor("Carlos Perez", "12345678-9", "1:00", "Introduccion a la IA");
-    Persona asistente1 = new Asistente("Ana Gonzalez", "11111111-1", 1, 60);
-    Persona expositor2 = new Expositor("Maria Rodriguez", "21456789-0", "1:00", "Avances en Machine Learning");
-    Persona asistente2 = new Asistente("Eloisa Cortes", "11111111-2", 1, 60);
-
-    Presentacion presentacion1 = new Presentacion("Introduccion a la IA", "10:00", "11:00", "IBC 2-12", new ArrayList<>(Arrays.asList(expositor1, asistente1)));
-    Presentacion presentacion2 = new Presentacion("Avances en Machine Learning", "12:00", "13:00", "IBC 2-4", new ArrayList<>(Arrays.asList(expositor2, asistente2)));
-
-    presentaciones.get("lun").add(presentacion1);
-    presentaciones.get("mar").add(presentacion2);
-
-    mapaAsistentes.put(asistente1.getRut(), (Asistente) asistente1);
-    mapaAsistentes.put(asistente2.getRut(), (Asistente) asistente2);
-    
   }
 }

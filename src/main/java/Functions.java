@@ -48,6 +48,18 @@ public class Functions {
 
     // Crea una nueva presentación con los detalles proporcionados
     Presentacion nuevaPresentacion = new Presentacion(titulo, horaInicio, horaFin, sala, participantes);
+
+    try {
+      nuevaPresentacion.verificarHora();
+    } catch (Exception e) {
+      System.out.println("Las horas ingresadas no son válidas, se reiniciará el proceso nuevamente...");
+      System.out.println("Presione Enter para continuar...");
+
+      presioneTecla();
+      limpiarPantalla();
+      agregarPresentacion(congresoInternacional);
+      return;
+    }
     
     // Solicita los detalles de cada participante.
     for (int i = 0; i < numParticipants; i++) {
@@ -191,6 +203,20 @@ public class Functions {
 
     System.out.print("Ingrese la nueva hora de fin para la presentación: ");
     String nuevaHoraFin = scanner.nextLine();
+
+    Presentacion tempPresentacion = new Presentacion("titulo", nuevaHoraInicio, nuevaHoraFin, "sala", null);
+
+    try {
+      tempPresentacion.verificarHora();
+    } catch (Exception e) {
+      System.out.println("Las horas ingresadas no son válidas, se reiniciará el proceso nuevamente...");
+      System.out.println("Presione Enter para continuar...");
+
+      presioneTecla();
+      limpiarPantalla();
+      recalendarizarPresentacion(congresoInternacional);
+      return;
+    }
 
     nuevaPresentacion.setHoraInicio(nuevaHoraInicio);
     nuevaPresentacion.setHoraFin(nuevaHoraFin);

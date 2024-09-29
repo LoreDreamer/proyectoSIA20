@@ -37,14 +37,20 @@ public class Persona {
         return this.nombre.equalsIgnoreCase(nombre) && this.rut.equals(rut);
     }
 
-    public void verificarRut(String rut) throws rutInvalidoException {
-        int length = rut.length();
-
-        if (length > 10 || length < 10) {
-            throw new rutInvalidoException();
+    public static boolean stringSinLetras(String input) {
+        // Check if the string contains any letters
+        if (input.matches(".*[a-jl-zA-JL-Z]+.*")) {
+            return false;
         }
+        return true;
+    }
 
-        return;
+    public boolean verificarDatos() {
+
+        if (rut.length() != 10 || rut.isBlank() || !stringSinLetras(rut)) {
+            return false;
+        }
+        return true;
     }
     
      // Método para mostrar la información de la persona.

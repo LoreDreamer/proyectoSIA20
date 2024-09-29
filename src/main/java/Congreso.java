@@ -11,24 +11,45 @@ public class Congreso {
 
     }
     
-    public Asistente searchAsistente(String rut) {
-        return mapaAsistentes.get(rut);
-    }
+    public Asistente searchAsistente(String rut) throws rutInvalidoException{ 
 
-    public void modifyAsistente(String rut, String nombre) {
-        Asistente searching = searchAsistente(rut);
-        searching.setRut(rut);
-        searching.setNombre(nombre);
+        Asistente revision = mapaAsistentes.get(rut);
+
+        if (revision == null) {
+            return null;
+        }
+
+        if (!revision.verificarDatos()) {
+            throw new rutInvalidoException();
+        }
+
+        return revision;
     }
 
     public void removingAsistenteFromPresentacion(String rut, int duracionRestar) {
-        Asistente searching = searchAsistente(rut);
+
+        Asistente searching = null;
+
+        try {
+            searching = searchAsistente(rut);
+        } catch (Exception e) {
+            return;
+        }
+
         searching.setTiempoTotal(searching.getTiempoTotal() - duracionRestar);
         searching.setPresentaciones(searching.getPresentaciones() - 1);
     }
 
     public void addingAsistenteToPresentacion(String rut, int duracionAnadir) {
-        Asistente searching = searchAsistente(rut);
+        
+        Asistente searching = null;
+
+        try {
+            searching = searchAsistente(rut);
+        } catch (Exception e) {
+            return;
+        }
+        
         searching.setTiempoTotal(searching.getTiempoTotal() + duracionAnadir);
         searching.setPresentaciones(searching.getPresentaciones() + 1);
     }

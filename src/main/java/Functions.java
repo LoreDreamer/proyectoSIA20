@@ -49,7 +49,6 @@ public class Functions {
     // Crea una nueva presentación con los detalles proporcionados
     Presentacion nuevaPresentacion = new Presentacion(titulo, horaInicio, horaFin, sala, participantes);
     
-
     // Solicita los detalles de cada participante.
     for (int i = 0; i < numParticipants; i++) {
 
@@ -60,13 +59,12 @@ public class Functions {
 
         System.out.print("Ingrese el rut del expositor: ");
         String rutExpositor = scanner.nextLine();
-
-        Persona expositorRevision = new Persona(newExpositor, rutExpositor);
         
+        String duracionExposicion = nuevaPresentacion.calcularDuracion(horaInicio, horaFin);
+
         try {
-          expositorRevision.verificarRut(rutExpositor);
-        }
-        catch (Exception e) {
+          nuevaPresentacion.agregarPersona(newExpositor, rutExpositor, duracionExposicion, titulo);
+        } catch (Exception e) {
           System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
           System.out.println("Presione Enter para continuar...");
 
@@ -74,11 +72,8 @@ public class Functions {
           limpiarPantalla();
           agregarPresentacion(congresoInternacional);
           return;
-        }
+        }  
 
-        String duracionExposicion = nuevaPresentacion.calcularDuracion(horaInicio, horaFin);
-
-        nuevaPresentacion.agregarPersona(newExpositor, rutExpositor, duracionExposicion, rutExpositor);
         System.out.println();
 
       } else {
@@ -90,12 +85,11 @@ public class Functions {
         String newRut = scanner.nextLine();
 
         int duracion = nuevaPresentacion.calcularDuracionMinutos(horaInicio, horaFin);
-        Persona asistenteRevision = new Persona(newName, newRut);
+        Asistente tempA = null;
 
         try {
-          asistenteRevision.verificarRut(newRut);
-        }
-        catch (Exception e) {
+          tempA = congresoInternacional.searchAsistente(newRut);
+        } catch(Exception e) {
           System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
           System.out.println("Presione Enter para continuar...");
 
@@ -105,8 +99,6 @@ public class Functions {
           return;
         }
         
-        Asistente tempA = congresoInternacional.searchAsistente(newRut);
-
         if (tempA != null) {
 
           congresoInternacional.addingAsistenteToPresentacion(newRut, duracion);
@@ -266,26 +258,23 @@ public class Functions {
           System.out.print("Ingrese el RUT del nuevo asistente: ");
           String nuevoRutA = scanner.nextLine();
 
-          Persona asistenteRevision = new Persona(nuevoNombreA, nuevoRutA);
-
-          try {
-            asistenteRevision.verificarRut(nuevoRutA);
-          }
-          catch (Exception e) {
-            System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
-            System.out.println("Presione Enter para continuar...");
-  
-            presioneTecla();
-            limpiarPantalla();
-            break;
-          }
-
           if (presentacionEncontrada.buscarParticipantePorEspecificacion(nuevoRutA, nuevoNombreA) != null) {
             System.out.println("Ya existe un asistente con el nombre y RUT proporcionados.");
             return;
           }
 
-          Asistente temp = congresoInternacional.searchAsistente(nuevoRutA);
+          Asistente temp = null;
+
+          try {
+            temp = congresoInternacional.searchAsistente(nuevoRutA);
+          } catch(Exception e) {
+            System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
+            System.out.println("Presione Enter para continuar...");
+
+            presioneTecla();
+            limpiarPantalla();
+            break;
+          }
 
           if (temp != null) {
 
@@ -309,23 +298,25 @@ public class Functions {
                 
           System.out.print("Ingrese el RUT del asistente que desea cambiar: ");
           String rutAsistente = scanner.nextLine();
-          Asistente tempPersona = (Asistente) presentacionEncontrada.buscarParticipantePorEspecificacion(rutAsistente);
-          
-          // Verifica si se encontró al asistente.
-          if (tempPersona == null) {
-            System.out.println("No se encontró ningún asistente con el RUT " + rutAsistente + ".");
+          Asistente tempPersona = null;
+
+          try {
+            tempPersona = (Asistente) presentacionEncontrada.buscarParticipantePorEspecificacion(rutAsistente);
+          } catch (Exception e) {
+            System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
+            System.out.println("Presione Enter para continuar...");
+
+            presioneTecla();
+            limpiarPantalla();
             break;
           }
 
-          try {
-            tempPersona.verificarRut(rutAsistente);
-          }
-          catch (Exception e) {
-            System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
-            System.out.println("Presione Enter para continuar...");
-  
+          // Verifica si se encontró al asistente.
+          if (tempPersona == null) {
+            System.out.println("\nNo se encontró ningún asistente con el RUT " + rutAsistente + ".");
+            System.out.println("Presione Enter para continuar.");
+
             presioneTecla();
-            limpiarPantalla();
             break;
           }
 
@@ -338,13 +329,28 @@ public class Functions {
           // Verifica si ya existe un asistente con el nuevo nombre y RUT.
 
           if (presentacionEncontrada.buscarParticipantePorEspecificacion(nuevoRutB, nuevoNombreB) != null) {
-            System.out.println("Ya existe un asistente con el nombre y RUT proporcionados.");
+            System.out.println("\nYa existe un asistente con el nombre y RUT proporcionados.");
+            System.out.println("Presione Enter para continuar.");
+
+            presioneTecla();
             break;
           }
 
-          Asistente tempAsistenteA = congresoInternacional.searchAsistente(rutAsistente);
-          Asistente tempAsistenteB = congresoInternacional.searchAsistente(nuevoRutB);
-     
+          Asistente tempAsistenteA = null;
+          Asistente tempAsistenteB = null;
+
+          try {
+            tempAsistenteA = congresoInternacional.searchAsistente(rutAsistente);
+            tempAsistenteB = congresoInternacional.searchAsistente(nuevoRutB);
+          } catch (Exception e) {
+            System.out.println("\nUno de los ruts es inválido, se reiniciará el proceso nuevamente...");
+            System.out.println("Presione Enter para continuar...");
+
+            presioneTecla();
+            limpiarPantalla();
+            break;
+          }
+
           if (!tempAsistenteA.compararCon(nuevoRutB, nuevoNombreB) && tempAsistenteA != null && tempAsistenteB != null) {
 
             congresoInternacional.removingAsistenteFromPresentacion(rutAsistente, duracion);
@@ -370,25 +376,25 @@ public class Functions {
                 
             System.out.print("Ingrese el RUT del asistente que desea sacar: ");
             String rutSacar = scanner.nextLine();
-            Persona asistenteASacar = presentacionEncontrada.buscarParticipantePorEspecificacion(rutSacar);
+
+            Persona asistenteASacar = null;
+
+            try {
+              asistenteASacar = presentacionEncontrada.buscarParticipantePorEspecificacion(rutSacar);
+            } catch (Exception e) {
+              System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
+              System.out.println("Presione Enter para continuar...");
+
+              presioneTecla();
+              limpiarPantalla();
+              break;
+            }
 
             if (asistenteASacar == null) {
               System.out.println("No se encontró ningún asistente con el RUT " + rutSacar + ".");
               System.out.println("Presione enter para continuar...");
               presioneTecla();
               
-              break;
-            }
-
-            try {
-              asistenteASacar.verificarRut(rutSacar);
-            }
-            catch (Exception e) {
-              System.out.println("\nRut inválido, se reiniciará el proceso nuevamente...");
-              System.out.println("Presione Enter para continuar...");
-    
-              presioneTecla();
-              limpiarPantalla();
               break;
             }
 

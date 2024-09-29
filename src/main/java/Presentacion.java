@@ -52,8 +52,13 @@
             this.sala = sala;
         }
 
-        public void agregarPersona(String nombre, String rut, String duracionExposicion, String temaExposicion) {
+        public void agregarPersona(String nombre, String rut, String duracionExposicion, String temaExposicion) throws rutInvalidoException{
             Persona tempPersona = new Expositor(nombre, rut, duracionExposicion, temaExposicion);
+            
+            if (tempPersona.verificarDatos()) {
+                throw new rutInvalidoException();
+            }
+            
             listaParticipante.add(tempPersona);
         }
 
@@ -66,7 +71,14 @@
             listaParticipante.add(asistente);
         }
 
-        public Persona buscarParticipantePorEspecificacion(String rut) {
+        public Persona buscarParticipantePorEspecificacion(String rut) throws rutInvalidoException{
+
+            Persona revision = new Persona("placeholder", rut);
+
+            if (!revision.verificarDatos()) {
+                throw new rutInvalidoException();
+            }
+
             for (Persona persona : listaParticipante) {
                 if (persona.getRut().equalsIgnoreCase(rut) && (persona instanceof Asistente)) {
                     return persona;
@@ -192,8 +204,15 @@
             mostrarListaParticipantes();
         }
 
-
-        public void revisarTiempo(String horaInicio, String horaFinal) {
+        public void verificarHora(String horaInicio, String horaFinal) throws tiempoInvalidoExcepcion{
+            int lengthInicio = horaInicio.length();
+            int lengthFinal = horaFinal.length();
+    
+            if (lengthFinal != 4 && lengthInicio != 4) {
+                throw new tiempoInvalidoExcepcion();
+            }
             
+    
+    
         }
     }

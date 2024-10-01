@@ -505,6 +505,10 @@ public class Functions {
   public static void limpiarPantalla() {
     System.out.print("\033[H\033[2J");  
     System.out.flush();
+    
+    for (int i = 0; i < 50; i++) {
+        System.out.println();
+    }
   }
   
   // Método auxiliar para esperar que el usuario presione una tecla.

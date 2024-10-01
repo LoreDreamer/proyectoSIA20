@@ -22,7 +22,8 @@ public class Main {
       System.out.println("2. Mostrar información de presentación");
       System.out.println("3. Recalendarizar presentación");
       System.out.println("4. Cambiar asistente de presentación");
-      System.out.println("5. Salir" + "\n\n");
+      System.out.println("5. Mostrar por filtro asistentes/expositores");
+      System.out.println("6. Salir" + "\n\n");
 
       System.out.print("Ingrese su opción: "); // Pide al usuario que ingrese una opción.
       
@@ -69,8 +70,18 @@ public class Main {
           Functions.presioneTecla();
           Functions.limpiarPantalla();
           break;
-          
+        
         case 5:
+
+          Functions.limpiarPantalla();
+          Functions.mostrarPorFiltro(congresoInternacional);
+
+          System.out.println("Presione enter para continuar...");
+          Functions.presioneTecla();
+          Functions.limpiarPantalla();
+          break;
+          
+        case 6:
           // Limpia la pantalla, muestra un mensaje de salida y termina el programa.
           Functions.limpiarPantalla();
           System.out.println("Saliendo del programa...");

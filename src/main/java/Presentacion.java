@@ -52,7 +52,7 @@ public class Presentacion {
         this.sala = sala;
     }
 
-    public void agregarPersona(String nombre, String rut, String duracionExposicion, String temaExposicion) throws rutInvalidoException {
+    public void agregarPersona(String nombre, String rut, int duracionExposicion, String temaExposicion) throws rutInvalidoException {
         Persona tempPersona = new Expositor(nombre, rut, duracionExposicion, temaExposicion);
         if (tempPersona.verificarDatos()) {
             throw new rutInvalidoException();
@@ -101,7 +101,7 @@ public class Presentacion {
     public void eliminarParticipante(Persona nuevaPersona) {
         listaParticipante.remove(nuevaPersona);
     }
-
+    /* 
     public String calcularDuracion(String horaInicio, String horaFin) {
         String[] inicio = horaInicio.split(":");
         String[] fin = horaFin.split(":");
@@ -125,6 +125,7 @@ public class Presentacion {
 
         return String.format("%02d:%02d", duracionHoras, duracionRestanteMinutos);
     }
+    */
 
     public int calcularDuracionMinutos(String horaInicio, String horaFin) {
         String[] inicio = horaInicio.split(":");

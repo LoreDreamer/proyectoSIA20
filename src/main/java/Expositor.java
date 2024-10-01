@@ -1,15 +1,15 @@
 public class Expositor extends Persona{
 
-    private String duracionExposicion;
+    private int duracionExposicion;
     private String temaExposicion;
 
-    public Expositor(String nombre, String rut, String duracionExposicion, String temaExposicion) {
+    public Expositor(String nombre, String rut, int duracionExposicion, String temaExposicion) {
         super(nombre, rut);
         this.duracionExposicion = duracionExposicion;
         this.temaExposicion = temaExposicion;
     }
 
-    public void setDuracion(String duracionExposicion) {
+    public void setDuracion(int duracionExposicion) {
         this.duracionExposicion = duracionExposicion;
     }
 
@@ -17,7 +17,7 @@ public class Expositor extends Persona{
         this.temaExposicion = temaExposicion;
     }
 
-    public String getDuracion() {
+    public int getDuracion() {
         return duracionExposicion;
     }
 
@@ -29,7 +29,7 @@ public class Expositor extends Persona{
         System.out.println("Nombre: " + getNombre());
         System.out.println("Rut: " + getRut());
         System.out.println("Rol: Expositor");
-        System.out.println("Duración de la exposición: " + getDuracion());
+        System.out.println("Duración de la exposición: " + getDuracion() + " minutos.");
         System.out.println("Tema a presentar: " + getTema());
     }
 }

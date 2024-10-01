@@ -72,7 +72,7 @@ public class Functions {
         System.out.print("Ingrese el rut del expositor: ");
         String rutExpositor = scanner.nextLine();
         
-        String duracionExposicion = nuevaPresentacion.calcularDuracion(horaInicio, horaFin);
+        int duracionExposicion = nuevaPresentacion.calcularDuracionMinutos(horaInicio, horaFin);
 
         try {
           nuevaPresentacion.agregarPersona(newExpositor, rutExpositor, duracionExposicion, titulo);
@@ -84,7 +84,9 @@ public class Functions {
           limpiarPantalla();
           agregarPresentacion(congresoInternacional);
           return;
-        }  
+        }
+
+        congresoInternacional.anadirExpositor(rutExpositor, new Expositor(newExpositor, rutExpositor, duracionExposicion, titulo));
 
         System.out.println();
 
@@ -441,6 +443,45 @@ public class Functions {
         }
         limpiarPantalla();
     }
+  }
+
+  public static void mostrarPorFiltro(Congreso congresoInternacional) {
+
+    System.out.println("======================================");
+    System.out.println("      Filitrar asistentes/expositores");
+    System.out.println("======================================\n");
+    System.out.println("1. Filtrar por presentaciones atendidas (asistentes)");
+    System.out.println("2. Filtrar por horas atendidas (asistentes)");
+    System.out.println("3. Filtrar por duración exposición (expositores)");
+    System.out.println("4. Volver al menú principal\n");
+
+    System.out.print("Ingrese su opción: ");
+    int opcion = scanner.nextInt();
+
+    System.out.print("Ingrese su valor a filtrar: ");
+    int valor = scanner.nextInt();
+
+    System.out.println();
+
+    switch (opcion) {
+
+      case 1:
+
+        congresoInternacional.showPresentacionesAtendidas(valor);
+        break;
+      
+      case 2:
+
+        congresoInternacional.showHorasAtendidas(valor);
+        break;
+
+      case 3:
+
+        congresoInternacional.showDuracionExposiciones(opcion);
+        break;
+
+    }
+
   }
   
   // -------------------- Métodos auxiliares -------------------- //

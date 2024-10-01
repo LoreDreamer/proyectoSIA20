@@ -220,6 +220,10 @@ public class Functions {
       return;
     }
 
+    Expositor cambioExpositor = nuevaPresentacion.encontrarExpositor();
+    cambioExpositor.setDuracion(nuevaPresentacion.calcularDuracionMinutos(nuevaHoraInicio, nuevaHoraFin));
+
+
     nuevaPresentacion.setHoraInicio(nuevaHoraInicio);
     nuevaPresentacion.setHoraFin(nuevaHoraFin);
 

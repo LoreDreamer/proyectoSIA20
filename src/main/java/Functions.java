@@ -451,15 +451,14 @@ public class Functions {
     System.out.println("      Filitrar asistentes/expositores");
     System.out.println("======================================\n");
     System.out.println("1. Filtrar por presentaciones atendidas (asistentes)");
-    System.out.println("2. Filtrar por horas atendidas (asistentes)");
+    System.out.println("2. Filtrar por minutos atendidas (asistentes)");
     System.out.println("3. Filtrar por duración exposición (expositores)");
     System.out.println("4. Volver al menú principal\n");
 
     System.out.print("Ingrese su opción: ");
     int opcion = scanner.nextInt();
 
-    System.out.print("Ingrese su valor a filtrar: ");
-    int valor = scanner.nextInt();
+    int valor;
 
     System.out.println();
 
@@ -467,18 +466,30 @@ public class Functions {
 
       case 1:
 
+        System.out.print("Ingrese su valor a filtrar: ");
+        valor = scanner.nextInt();
+
         congresoInternacional.showPresentacionesAtendidas(valor);
         break;
       
       case 2:
+
+        System.out.print("Ingrese su valor a filtrar: ");
+        valor = scanner.nextInt();
 
         congresoInternacional.showHorasAtendidas(valor);
         break;
 
       case 3:
 
-        congresoInternacional.showDuracionExposiciones(opcion);
+        System.out.print("Ingrese su valor a filtrar: ");
+        valor = scanner.nextInt();
+
+        congresoInternacional.showDuracionExposiciones(valor);
         break;
+      
+      case 4:
+        return;
 
     }
 

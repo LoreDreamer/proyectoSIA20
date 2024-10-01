@@ -29,7 +29,7 @@ public class Expositor extends Persona{
         System.out.println("Nombre: " + getNombre());
         System.out.println("Rut: " + getRut());
         System.out.println("Rol: Expositor");
-        System.out.println("Duración de la exposición: " + getDuracion() + " minutos.");
+        System.out.println("Duración de la exposición: " + getDuracion() + " minuto(s).");
         System.out.println("Tema a presentar: " + getTema());
     }
 }

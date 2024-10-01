@@ -8,6 +8,7 @@ public class Congreso {
 
     public Congreso() {
         mapaAsistentes = new HashMap<String, Asistente>();
+        mapaExpositores = new HashMap<String, Expositor>();
         presentaciones = new HashMap<String, List<Presentacion>>();
     }
     
@@ -162,6 +163,7 @@ public class Congreso {
     
     public void showPresentacionesAtendidas(int presentacionesAtendidas) {
         ArrayList<Asistente> newArrayList = asistenteMapValuesToArrayList(mapaAsistentes);
+        boolean flag = false;
         
         // Now you can iterate over newArrayList
         for (Asistente asistente : newArrayList) {
@@ -169,34 +171,51 @@ public class Congreso {
 
             if (asistente.getPresentaciones() == presentacionesAtendidas) {
                 asistente.mostrarInformacion();  // Example: print the asistente's name
+                flag = true;
                 System.out.println();
             }
         }
+
+        if (!flag)
+            System.out.println("No se encontró a ningún asistente con " + presentacionesAtendidas + " presentaciones atendidas.");
+
     }
 
     public void showHorasAtendidas(int minutosAtendidos) {
         ArrayList<Asistente> newArrayList = asistenteMapValuesToArrayList(mapaAsistentes);
+        boolean flag = false;
         
         for (Asistente asistente : newArrayList) {
             
             if (asistente.getTiempoTotal() == minutosAtendidos) {
-                asistente.mostrarInformacion();  
+                asistente.mostrarInformacion();
+                flag = true;  
                 System.out.println();
             }
+        }
+
+        if (!flag) {
+            System.out.println("No se encontró a ningún asistente con " + minutosAtendidos + " minutos de presentaciones.");
         }
 
     }
 
     public void showDuracionExposiciones(int duracionExposicion) {
         ArrayList<Expositor> newArrayList = expositorMapValuesToArrayList(mapaExpositores);
+        boolean flag = false;
 
         for (Expositor expositor : newArrayList) {
 
             if (expositor.getDuracion() == duracionExposicion) {
                 expositor.mostrarInformacion();
+                flag = true;
                 System.out.println();
             }
         }
+        if (!flag) {
+            System.out.println("No se encontró a ningún expositor con " + duracionExposicion + " minutos de exposición.");
+        }
+
     }
     
 }

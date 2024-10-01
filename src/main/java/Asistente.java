@@ -29,7 +29,7 @@ public class Asistente extends Persona{
         System.out.println("Nombre: " + getNombre());
         System.out.println("Rut: " + getRut());
         System.out.println("Rol: Asistente");
-        System.out.println("Presentaciones atendidas: " + getPresentaciones() + " minutos.");
-        System.out.println("Tiempo total de las presentaciones atendidas: " + getTiempoTotal());
+        System.out.println("Presentaciones atendidas: " + getPresentaciones() + " presentacion(es).");
+        System.out.println("Tiempo total de las presentaciones atendidas: " + getTiempoTotal()+ " minuto(s).");
     }
 }

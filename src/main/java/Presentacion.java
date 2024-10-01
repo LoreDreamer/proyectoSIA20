@@ -194,39 +194,32 @@ public class Presentacion {
 
     public boolean comprobacionHora(String horaTemp) {
 
-        int largoHora = horaTemp.length();
-        boolean flag = false;
-
-        if (largoHora != 5 || !horaTemp.contains(":")) 
-            return true;
-
-        if (horaTemp.charAt(0) == 2) {
-            flag = true;
-        }
-
-        for (int i = 0; i < largoHora; i++) {
-
-            char tempChar = horaTemp.charAt(i);
-
-            if (!Character.isDigit(tempChar) && i != 2) {
-                return true;
-            }
-
-            int intChar = tempChar;
-
-            if (i == 0 && (intChar < 0 || intChar > 2)) {
-                return true;
-            } else if (i == 1 && flag && (intChar < 0  || intChar > 3)) {
-                return true;
-            } else if ((i == 1 && !flag) || (i == 4) && (intChar < 0 || intChar > 9)) {
-                return true;
-            } else if (i == 3 && (intChar < 0 || intChar > 6)){
-                return true;
-            }
-        }
-
-        return false;
+    int largoHora = horaTemp.length();
+    
+    if (largoHora != 5 || horaTemp.charAt(2) != ':') {
+        return true;
     }
+
+    String[] timeParts = horaTemp.split(":");
+    
+    if (timeParts.length != 2) {
+        return true;
+    }
+
+    try {
+        int hours = Integer.parseInt(timeParts[0]);
+        int minutes = Integer.parseInt(timeParts[1]);
+
+        if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+            return true;
+        }
+    } catch (NumberFormatException e) {
+        return true;
+    }
+
+    return false;
+}
+
 
     public void verificarHora() throws tiempoInvalidoExcepcion {
         if (comprobacionHora(horaInicio) || comprobacionHora(horaFin)) {

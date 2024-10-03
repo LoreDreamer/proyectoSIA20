@@ -37,25 +37,19 @@ public class Persona {
         return this.nombre.equalsIgnoreCase(nombre) && this.rut.equals(rut);
     }
 
-    public static boolean stringSinLetras(String input) {
-        // Check if the string contains any letters
-        if (input.matches(".*[a-jl-zA-JL-Z]+.*")) {
-            return false;
-        }
-        return true;
-    }
+    public boolean verificarDatos(String verificarRut) {
 
-    public boolean verificarDatos() {
-
-        if (rut.length() != 10 || rut.isBlank() || !stringSinLetras(rut)) {
-            return false;
+        String rutPattern = "\\d{7,8}-[0-9Kk]";
+   
+        if (verificarRut.isBlank() || !verificarRut.matches(rutPattern)) {
+            return true;
         }
-        return true;
+
+        return false;
     }
     
-     // Método para mostrar la información de la persona.
+     
     public void mostrarInformacion() {
-        // Mostrar información en la consola.
         System.out.println("Nombre : " + nombre);
         System.out.println("Rut : " + rut);
     }

@@ -1,3 +1,5 @@
+package Classes;
+
 public class Persona {
 
     // Atributos de la clase Persona.
@@ -38,15 +40,17 @@ public class Persona {
     }
 
     public boolean verificarDatos(String verificarRut) {
-
-        String rutPattern = "\\d{7,8}-[0-9Kk]";
-   
-        if (verificarRut.isBlank() || !verificarRut.matches(rutPattern)) {
-            return true;
-        }
-
-        return false;
+    // Regular expression to match a valid RUT
+    // This will match numbers followed by a dash and a single digit or 'K'
+    String rutPattern = "\\d{7,8}-[0-9Kk]";
+    
+    // Check if the RUT is blank or doesn't match the pattern
+    if (verificarRut.isBlank() || !verificarRut.matches(rutPattern)) {
+        return true; // Return true if invalid
     }
+
+    return false; // Return false if valid
+}
     
      
     public void mostrarInformacion() {

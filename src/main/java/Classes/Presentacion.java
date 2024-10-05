@@ -1,3 +1,4 @@
+package Classes;
 import java.util.*;
 
 public class Presentacion {
@@ -10,12 +11,12 @@ public class Presentacion {
     private ArrayList<Persona> listaParticipante;
 
     // Constructor para inicializar una presentación con todos sus atributos.
-    public Presentacion(String titulo, String horaInicio, String horaFin, String sala, ArrayList<Persona> listaParticipante) {
+    public Presentacion(String titulo, String horaInicio, String horaFin, String sala) {
         this.titulo = titulo;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.sala = sala;
-        this.listaParticipante = listaParticipante;
+        this.listaParticipante = new ArrayList<Persona>();
     }
 
     // Métodos getter para acceder a los atributos de la presentación.
@@ -53,8 +54,9 @@ public class Presentacion {
     }
 
     public void agregarPersona(String nombre, String rut, int duracionExposicion, String temaExposicion) throws rutInvalidoException {
+                
         Persona tempPersona = new Expositor(nombre, rut, duracionExposicion, temaExposicion);
-        if (tempPersona.verificarDatos()) {
+        if (tempPersona.verificarDatos(rut)) {
             throw new rutInvalidoException();
         }
         listaParticipante.add(tempPersona);
@@ -65,13 +67,17 @@ public class Presentacion {
         listaParticipante.add(tempPersona);
     }
 
-    public void agregarPersona(Asistente asistente) {
+    public void agregarPersona(Asistente asistente) throws rutInvalidoException {
+        
+        if (asistente.verificarDatos(asistente.getRut())) {
+            throw new rutInvalidoException();
+        }
         listaParticipante.add(asistente);
     }
 
     public Persona buscarParticipantePorEspecificacion(String rut) throws rutInvalidoException {
         Persona revision = new Persona("placeholder", rut);
-        if (!revision.verificarDatos()) {
+        if (revision.verificarDatos(rut)) {
             throw new rutInvalidoException();
         }
         for (Persona persona : listaParticipante) {
@@ -98,8 +104,17 @@ public class Presentacion {
     }
 
     // Método para eliminar un participante de la lista.
-    public void eliminarParticipante(Persona nuevaPersona) {
-        listaParticipante.remove(nuevaPersona);
+    public void eliminarParticipante(String rut) {
+        
+        Persona persona = null;
+        
+        try {
+            persona = buscarParticipantePorEspecificacion(rut); 
+        } catch (Exception e) {
+            return; // siempre se que va a estar.
+        }
+       
+        listaParticipante.remove(persona);
     }
     /* 
     public String calcularDuracion(String horaInicio, String horaFin) {
@@ -127,7 +142,7 @@ public class Presentacion {
     }
     */
 
-    public int calcularDuracionMinutos(String horaInicio, String horaFin) {
+    public int calcularDuracionMinutos() {
         String[] inicio = horaInicio.split(":");
         String[] fin = horaFin.split(":");
 
@@ -147,13 +162,8 @@ public class Presentacion {
         return minutosFinal - minutosInicio;
     }
 
-    public Expositor encontrarExpositor() {
-        for (Persona i : listaParticipante) {
-            if (i instanceof Expositor) {
-                return (Expositor) i;
-            }
-        }
-        return null;
+    public Persona encontrarExpositor() {
+        return listaParticipante.get(0);
     }
 
     public void actualizarAsistentes(Map<String, Asistente> mapaAsistentes) {
@@ -191,6 +201,10 @@ public class Presentacion {
 
         mostrarListaParticipantes();
     }
+    
+    public ArrayList<Persona> getAsistentes() {
+        return listaParticipante;
+    }
 
     public boolean comprobacionHora(String horaTemp) {
 
@@ -221,9 +235,9 @@ public class Presentacion {
 }
 
 
-    public void verificarHora() throws tiempoInvalidoExcepcion {
+    public void verificarHora() throws tiempoInvalidoException {
         if (comprobacionHora(horaInicio) || comprobacionHora(horaFin)) {
-            throw new tiempoInvalidoExcepcion();
+            throw new tiempoInvalidoException();
         }
     }
 }

@@ -1,3 +1,4 @@
+package Classes;
 import java.util.*;
 
 public class Congreso {
@@ -15,27 +16,26 @@ public class Congreso {
     public Asistente searchAsistente(String rut) throws rutInvalidoException{ 
 
         Asistente revision = mapaAsistentes.get(rut);
-
-        if (revision == null) {
+        Persona validPerson = new Persona("Revisor", "No tiene rut");
+        
+        if (revision == null && !validPerson.verificarDatos(rut)) {
             return null;
         }
-
-        if (!revision.verificarDatos()) {
+        
+        if (revision.verificarDatos(rut)) {
             throw new rutInvalidoException();
         }
 
         return revision;
     }
 
-    public void removingAsistenteFromPresentacion(String rut, int duracionRestar) {
+    public void removingAsistenteFromPresentacion(String rut, int duracionRestar) throws asistenteException{
 
         Asistente searching = null;
-
-        try {
-            searching = searchAsistente(rut);
-        } catch (Exception e) {
-            return;
-        }
+        
+        if ((searching = mapaAsistentes.get(rut)) == null)
+            throw new asistenteException();
+       
 
         searching.setTiempoTotal(searching.getTiempoTotal() - duracionRestar);
         searching.setPresentaciones(searching.getPresentaciones() - 1);
@@ -82,9 +82,21 @@ public class Congreso {
         Persona expositor2 = new Expositor("Maria Rodriguez", "21456789-0", 60, "Avances en Machine Learning");
         Persona asistente2 = new Asistente("Eloisa Cortes", "11111111-2", 1, 60);
 
-        Presentacion presentacion1 = new Presentacion("Introduccion a la IA", "10:00", "11:00", "IBC 2-12", new ArrayList<>(Arrays.asList(expositor1, asistente1)));
-        Presentacion presentacion2 = new Presentacion("Avances en Machine Learning", "12:00", "13:00", "IBC 2-4", new ArrayList<>(Arrays.asList(expositor2, asistente2)));
-
+        Presentacion presentacion1 = new Presentacion("Introduccion a la IA", "10:00", "11:00", "IBC 2-12");
+        Presentacion presentacion2 = new Presentacion("Avances en Machine Learning", "12:00", "13:00", "IBC 2-4");
+        
+        try {
+        
+            presentacion1.agregarPersona("Carlos Perez", "12345678-9", 120, "Introduccion a la IA");
+            presentacion1.agregarPersona((Asistente) asistente1);
+        
+            presentacion2.agregarPersona("Maria Rodriguez", "21456789-0", 120, "Avances en Machine Learning");
+            presentacion2.agregarPersona((Asistente) asistente2);
+            
+        
+        } catch (Exception e) {
+            System.out.println("L");
+        }
         presentaciones.get("lun").add(presentacion1);
         presentaciones.get("mar").add(presentacion2);
 
@@ -93,18 +105,28 @@ public class Congreso {
 
         mapaExpositores.put(expositor1.getRut(), (Expositor) expositor1);
         mapaExpositores.put(expositor2.getRut(), (Expositor) expositor2);
+        
+        //presentacion1.mostrarInformacion();
+        //presentacion2.mostrarInformacion();
 
     }
 
     public static boolean  verficacionDia(String dia) {
         if (!presentaciones.containsKey(dia)) {
-            System.out.println("\n" + "Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab)." + "\n\n");
+            //System.out.println("\n" + "Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab)." + "\n\n");
             return false;
         }
         return true;
     }
 
-    public void anadirPresentacion(Presentacion nuevaPresentacion, String dia) {
+    public void anadirPresentacion(Presentacion nuevaPresentacion, String dia) throws diaInvalidoException{
+        
+        dia = dia.toLowerCase().trim();
+        
+        if (!presentaciones.containsKey(dia)) {
+            throw new diaInvalidoException();
+        }
+        
         presentaciones.get(dia).add(nuevaPresentacion);
     }
 
@@ -114,9 +136,7 @@ public class Congreso {
 
     public void mostrarPresentacionesPorDia(String dia) {
         List<Presentacion> listaPresentaciones = presentaciones.get(dia);
-    
-        Functions.limpiarPantalla(); // Limpia la pantalla antes de mostrar la información.
-    
+   
         // Muestra las presentaciones si hay alguna registrada para el día.
         if (listaPresentaciones.isEmpty()) {
             System.out.println("No hay presentaciones registradas para el día " + dia + ".");
@@ -130,13 +150,17 @@ public class Congreso {
         }
     }
 
-    public Presentacion encontrarPresentacion(String dia, String titulo) {
+
+    public Presentacion encontrarPresentacion(String dia, String titulo) throws presentacionNoEncontradaException, diaInvalidoException {
+        
+        if (!verficacionDia(dia)) {
+            throw new diaInvalidoException();
+        }
+        
         List<Presentacion> listaPresentaciones = presentaciones.get(dia);
 
-        Functions.limpiarPantalla();
-
         if (listaPresentaciones.isEmpty()) {
-            return null;
+            throw new presentacionNoEncontradaException();
         } else {
             for (Presentacion presentacion : listaPresentaciones) {
                 if (presentacion.getTitulo().equals(titulo)) {
@@ -144,7 +168,7 @@ public class Congreso {
                 }
             }
         }
-        return null;
+        throw new presentacionNoEncontradaException();
     }
 
     public void anadirExpositor(String rut, Expositor newExpositor) {
@@ -218,4 +242,51 @@ public class Congreso {
 
     }
     
+    public Object[][] getPresentacionesData(String dia) {
+    
+        List<Presentacion> listaPresentaciones = presentaciones.get(dia);
+    
+
+        if (listaPresentaciones == null || listaPresentaciones.isEmpty()) {
+            return new Object[0][0];  // Return an empty array if no data
+        }
+
+        Object[][] data = new Object[listaPresentaciones.size()][4];  // 4 columns: Titulo, Horario, Sala, Participantes
+
+        for (int i = 0; i < listaPresentaciones.size(); i++) {
+        
+            Presentacion p = listaPresentaciones.get(i);
+            data[i][0] = p.getTitulo();
+            data[i][1] = p.getHoraInicio() + " - " + p.getHoraFin();  // Horario
+            data[i][2] = p.getSala();  // Sala
+
+            // StringBuilder to accumulate participant names and roles
+            StringBuilder participantes = new StringBuilder();
+
+            for (Persona persona : p.getAsistentes()) {
+                if (persona instanceof Asistente) {
+                    Asistente asistente = (Asistente) persona;
+                    participantes.append(asistente.getNombre())
+                             .append(" (Asistente)")
+                             .append(", ");
+                } else if (persona instanceof Expositor) {
+                    Expositor expositor = (Expositor) persona;
+                    participantes.append(expositor.getNombre())
+                             .append(" (Expositor)")
+                             .append(", ");
+                }
+            }
+
+            // Remove the last comma and space, and add to the data table
+            if (participantes.length() > 0) {
+                participantes.setLength(participantes.length() - 2);
+            }
+
+            data[i][3] = participantes.toString();
+        }
+
+        return data;  // Return the data as a 2D array
+    }     
+  
 }
+

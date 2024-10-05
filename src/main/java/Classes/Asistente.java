@@ -1,3 +1,5 @@
+package Classes;
+
 public class Asistente extends Persona{
 
     private int presentacionesAtendidas;

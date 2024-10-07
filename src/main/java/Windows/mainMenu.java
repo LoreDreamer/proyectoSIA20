@@ -27,6 +27,7 @@ public class mainMenu extends javax.swing.JFrame {
         mostrar = new javax.swing.JMenuItem();
         recalendarizar = new javax.swing.JMenuItem();
         asistentes = new javax.swing.JMenuItem();
+        filtrar = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,6 +64,9 @@ public class mainMenu extends javax.swing.JFrame {
 
         asistentes.setText("Gestionar asistentes");
         jMenu1.add(asistentes);
+
+        filtrar.setText("Filtrar por valor");
+        jMenu1.add(filtrar);
 
         jMenuBar1.add(jMenu1);
 
@@ -103,10 +107,15 @@ public class mainMenu extends javax.swing.JFrame {
     public JMenuItem getAsistentes() {
         return asistentes;
     }
+    
+    public JMenuItem getFiltrar() {
+        return filtrar;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem agregar;
     private javax.swing.JMenuItem asistentes;
+    private javax.swing.JMenuItem filtrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;

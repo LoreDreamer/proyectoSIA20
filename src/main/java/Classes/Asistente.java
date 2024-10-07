@@ -34,4 +34,20 @@ public class Asistente extends Persona{
         System.out.println("Presentaciones atendidas: " + getPresentaciones() + " presentacion(es).");
         System.out.println("Tiempo total de las presentaciones atendidas: " + getTiempoTotal()+ " minuto(s).");
     }
+    
+    public boolean verificarDatos(String rut, String name, int tiempoTotalPresentaciones) {
+        
+        String rutPattern = "\\d{7,8}[-–][0-9Kk]";
+        String namePattern = "[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+";
+    
+        if (rut.trim().isBlank() || !rut.trim().matches(rutPattern)) {
+            return true; 
+        } else if (tiempoTotalPresentaciones < 0) {
+            return true;
+        } else if (name.trim().isBlank() || !name.trim().matches(namePattern)) {
+            return true;  
+        }
+
+        return false;
+    }
 }

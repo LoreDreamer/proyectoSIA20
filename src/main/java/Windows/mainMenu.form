@@ -29,6 +29,11 @@
                 <Property name="text" type="java.lang.String" value="Gestionar asistentes"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="filtrar">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Filtrar por valor"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>

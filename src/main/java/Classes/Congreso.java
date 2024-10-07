@@ -13,19 +13,17 @@ public class Congreso {
         presentaciones = new HashMap<String, List<Presentacion>>();
     }
     
-    public Asistente searchAsistente(String rut) throws rutInvalidoException{ 
+    public Asistente searchAsistente(String rut) throws datoInvalidosException{ 
 
         Asistente revision = mapaAsistentes.get(rut);
-        Persona validPerson = new Persona("Revisor", "No tiene rut");
+        Persona validPerson = new Persona("Revisor", rut);
         
-        if (revision == null && !validPerson.verificarDatos(rut)) {
-            return null;
+        if (revision != null && revision.verificarDatos(rut, revision.getNombre(), revision.getTiempoTotal())) { 
+            throw new datoInvalidosException(); // Verificacion en más detalle si se encuentra
+        } else if (validPerson.verificarDatos(rut)) {
+            throw new datoInvalidosException();
         }
         
-        if (revision.verificarDatos(rut)) {
-            throw new rutInvalidoException();
-        }
-
         return revision;
     }
 
@@ -77,12 +75,12 @@ public class Congreso {
 
     public void inicializarDatosPresentaciones() {
 
-        Persona expositor1 = new Expositor("Carlos Perez", "12345678-9", 60, "Introduccion a la IA");
-        Persona asistente1 = new Asistente("Ana Gonzalez", "11111111-1", 1, 60);
+        Persona expositor1 = new Expositor("Carlos Perez", "12345678-9", 120, "Introduccion a la IA");
+        Persona asistente1 = new Asistente("Ana Gonzalez", "11111111-1", 1, 120);
         Persona expositor2 = new Expositor("Maria Rodriguez", "21456789-0", 60, "Avances en Machine Learning");
         Persona asistente2 = new Asistente("Eloisa Cortes", "11111111-2", 1, 60);
 
-        Presentacion presentacion1 = new Presentacion("Introduccion a la IA", "10:00", "11:00", "IBC 2-12");
+        Presentacion presentacion1 = new Presentacion("Introduccion a la IA", "10:00", "12:00", "IBC 2-12");
         Presentacion presentacion2 = new Presentacion("Avances en Machine Learning", "12:00", "13:00", "IBC 2-4");
         
         try {
@@ -90,7 +88,7 @@ public class Congreso {
             presentacion1.agregarPersona("Carlos Perez", "12345678-9", 120, "Introduccion a la IA");
             presentacion1.agregarPersona((Asistente) asistente1);
         
-            presentacion2.agregarPersona("Maria Rodriguez", "21456789-0", 120, "Avances en Machine Learning");
+            presentacion2.agregarPersona("Maria Rodriguez", "21456789-0", 60, "Avances en Machine Learning");
             presentacion2.agregarPersona((Asistente) asistente2);
             
         
@@ -105,15 +103,11 @@ public class Congreso {
 
         mapaExpositores.put(expositor1.getRut(), (Expositor) expositor1);
         mapaExpositores.put(expositor2.getRut(), (Expositor) expositor2);
-        
-        //presentacion1.mostrarInformacion();
-        //presentacion2.mostrarInformacion();
-
+     
     }
 
     public static boolean  verficacionDia(String dia) {
         if (!presentaciones.containsKey(dia)) {
-            //System.out.println("\n" + "Por favor, ingrese un día válido (lun, mar, mie, jue, vie, sab)." + "\n\n");
             return false;
         }
         return true;
@@ -133,23 +127,6 @@ public class Congreso {
     public void removerPresentacion(Presentacion antiguaPresentacion, String dia) {
         presentaciones.get(dia).remove(antiguaPresentacion);
     }
-
-    public void mostrarPresentacionesPorDia(String dia) {
-        List<Presentacion> listaPresentaciones = presentaciones.get(dia);
-   
-        // Muestra las presentaciones si hay alguna registrada para el día.
-        if (listaPresentaciones.isEmpty()) {
-            System.out.println("No hay presentaciones registradas para el día " + dia + ".");
-        } else {
-
-            for (Presentacion presentacion : listaPresentaciones) {
-                presentacion.actualizarAsistentes(mapaAsistentes);
-                presentacion.mostrarInformacion();
-                System.out.println();
-            }
-        }
-    }
-
 
     public Presentacion encontrarPresentacion(String dia, String titulo) throws presentacionNoEncontradaException, diaInvalidoException {
         
@@ -176,91 +153,83 @@ public class Congreso {
     }
 
     public static ArrayList<Asistente> asistenteMapValuesToArrayList(Map<String, Asistente> map) {
-        // Create a new ArrayList from the values of the HashMap
         return new ArrayList<>(map.values());
     }
 
     public static ArrayList<Expositor> expositorMapValuesToArrayList(Map<String, Expositor> map) {
-        // Create a new ArrayList from the values of the HashMap
         return new ArrayList<>(map.values());
     }
     
-    public void showPresentacionesAtendidas(int presentacionesAtendidas) {
+    public Object[][] showPresentacionesAtendidas(int presentacionesAtendidas) {
         ArrayList<Asistente> newArrayList = asistenteMapValuesToArrayList(mapaAsistentes);
-        boolean flag = false;
-        
-        // Now you can iterate over newArrayList
-        for (Asistente asistente : newArrayList) {
-            // Your logic for handling the asistente
+        List<Object[]> resultList = new ArrayList<>();
 
-            if (asistente.getPresentaciones() == presentacionesAtendidas) {
-                asistente.mostrarInformacion();  // Example: print the asistente's name
-                flag = true;
-                System.out.println();
+        for (Asistente temp : newArrayList) {
+            if (temp.getPresentaciones() == presentacionesAtendidas) {
+                resultList.add(new Object[]{temp.getNombre(), temp.getRut()});
             }
         }
 
-        if (!flag)
-            System.out.println("No se encontró a ningún asistente con " + presentacionesAtendidas + " presentaciones atendidas.");
+        if (resultList.isEmpty()) {
+            return new Object[0][0];  
+        }
 
+        return resultList.toArray(new Object[resultList.size()][]);
     }
 
-    public void showHorasAtendidas(int minutosAtendidos) {
-        ArrayList<Asistente> newArrayList = asistenteMapValuesToArrayList(mapaAsistentes);
-        boolean flag = false;
+    public Object[][] showMinutosAtendidas(int minutosAtendidos) {
         
-        for (Asistente asistente : newArrayList) {
-            
-            if (asistente.getTiempoTotal() == minutosAtendidos) {
-                asistente.mostrarInformacion();
-                flag = true;  
-                System.out.println();
+        ArrayList<Asistente> newArrayList = asistenteMapValuesToArrayList(mapaAsistentes);
+        List<Object[]> resultList = new ArrayList<>();
+
+        for (Asistente temp : newArrayList) {
+            if (temp.getTiempoTotal() == minutosAtendidos) {
+                resultList.add(new Object[]{temp.getNombre(), temp.getRut()});
             }
         }
 
-        if (!flag) {
-            System.out.println("No se encontró a ningún asistente con " + minutosAtendidos + " minutos de presentaciones.");
+        if (resultList.isEmpty()) {
+            return new Object[0][0];
         }
 
+        return resultList.toArray(new Object[resultList.size()][]);
     }
 
-    public void showDuracionExposiciones(int duracionExposicion) {
+    public Object[][] showDuracionExposiciones(int duracionExposicion) {
         ArrayList<Expositor> newArrayList = expositorMapValuesToArrayList(mapaExpositores);
-        boolean flag = false;
+        List<Object[]> resultList = new ArrayList<>();
 
-        for (Expositor expositor : newArrayList) {
-
-            if (expositor.getDuracion() == duracionExposicion) {
-                expositor.mostrarInformacion();
-                flag = true;
-                System.out.println();
+        for (Expositor temp : newArrayList) {
+            if (temp.getDuracion() == duracionExposicion) {
+                resultList.add(new Object[]{temp.getNombre(), temp.getRut()});
             }
         }
-        if (!flag) {
-            System.out.println("No se encontró a ningún expositor con " + duracionExposicion + " minutos de exposición.");
+
+        if (resultList.isEmpty()) {
+            return new Object[0][0];
         }
 
+        return resultList.toArray(new Object[resultList.size()][]);
     }
-    
+
     public Object[][] getPresentacionesData(String dia) {
     
         List<Presentacion> listaPresentaciones = presentaciones.get(dia);
     
 
         if (listaPresentaciones == null || listaPresentaciones.isEmpty()) {
-            return new Object[0][0];  // Return an empty array if no data
+            return new Object[0][0];
         }
 
-        Object[][] data = new Object[listaPresentaciones.size()][4];  // 4 columns: Titulo, Horario, Sala, Participantes
+        Object[][] data = new Object[listaPresentaciones.size()][4]; 
 
         for (int i = 0; i < listaPresentaciones.size(); i++) {
         
             Presentacion p = listaPresentaciones.get(i);
             data[i][0] = p.getTitulo();
-            data[i][1] = p.getHoraInicio() + " - " + p.getHoraFin();  // Horario
-            data[i][2] = p.getSala();  // Sala
+            data[i][1] = p.getHoraInicio() + " - " + p.getHoraFin();
+            data[i][2] = p.getSala();
 
-            // StringBuilder to accumulate participant names and roles
             StringBuilder participantes = new StringBuilder();
 
             for (Persona persona : p.getAsistentes()) {
@@ -277,7 +246,6 @@ public class Congreso {
                 }
             }
 
-            // Remove the last comma and space, and add to the data table
             if (participantes.length() > 0) {
                 participantes.setLength(participantes.length() - 2);
             }
@@ -285,8 +253,7 @@ public class Congreso {
             data[i][3] = participantes.toString();
         }
 
-        return data;  // Return the data as a 2D array
+        return data;
     }     
   
 }
-

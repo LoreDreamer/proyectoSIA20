@@ -34,4 +34,20 @@ public class Expositor extends Persona{
         System.out.println("Duración de la exposición: " + getDuracion() + " minuto(s).");
         System.out.println("Tema a presentar: " + getTema());
     }
+    
+    public boolean verificarDatos(String rut, String name, int duracionExposicion) {
+        
+        String rutPattern = "\\d{7,8}[-–][0-9Kk]";
+        String namePattern = "[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+";
+    
+        if (rut.trim().isBlank() || !rut.trim().matches(rutPattern)) {
+            return true; 
+        } else if (duracionExposicion < 0) {
+            return true;
+        } else if (name.trim().isBlank() || !name.trim().matches(namePattern)) {
+            return true;  
+        }
+
+        return false;
+    }
 }
